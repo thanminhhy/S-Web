@@ -9,6 +9,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Frontend\HomeController as FrontendHomeController;
 use App\Http\Controllers\Frontend\Auth\LoginController;
 use App\Http\Controllers\Frontend\Auth\RegisterController;
+use App\Http\Controllers\Frontend\Blog\BlogController as FrontendBlogController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -50,3 +52,7 @@ Route::post('/frontend/login', [LoginController::class, 'login'])->name('fronten
 //Register
 Route::get('/frontend/register', [Registercontroller::class, 'showRegister'])->name('frontend.register');
 Route::post('/frontend/register', [RegisterController::class, 'register'])->name('frontend.register');
+
+//Blog
+Route::get('/frontend/blog/index', [FrontendBlogController::class, 'index'])->name('frontend.blog.list');
+Route::get('/frontend/blog/detail/{blog}', [FrontendBlogController::class, 'showDetail'])->name('frontend.blog.detail');
