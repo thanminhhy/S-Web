@@ -10,35 +10,38 @@
                 <li><i class="fa fa-clock-o"></i> {{$blog->created_at->format('h:i A')}}</li>
                 <li><i class="fa fa-calendar"></i> {{$blog->created_at->format('d/m/Y')}}</li>
             </ul>
-            <!-- <span>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star-half-o"></i>
-								</span> -->
+            <div class="rate" data-id="{{$blog->id}}">
+                <div class="vote">
+                    @for($i = 1; $i<=5; $i++)
+                        <div class="star_{{$i}} ratings_stars {{$i<= $userRating ? 'ratings_vote ratings_over' : ''}}"><input value="{{$i}}" type="hidden"></div>
+                @endfor
+                <!-- <div class="star_1 ratings_stars"><input value="1" type="hidden"></div>
+                <div class="star_2 ratings_stars"><input value="2" type="hidden"></div>
+                <div class="star_3 ratings_stars"><input value="3" type="hidden"></div>
+                <div class="star_4 ratings_stars"><input value="4" type="hidden"></div>
+                <div class="star_5 ratings_stars"><input value="5" type="hidden"></div> -->
+                <span class="rate-np">{{$blog->rating_avg}}</span>
+            </div>
         </div>
-        <a>
-            <img src="images/blog/blog-one.jpg" alt="">
-        </a>
-        <div class="content-post">
-            {!! clean($blog->content) !!}
-        </div>
-
     </div>
+
+    <div class="content-post">
+        {!! clean($blog->content) !!}
+    </div>
+
+</div>
 </div><!--/blog-post-area-->
 
 <div class="rating-area">
     <ul class="ratings">
         <li class="rate-this">Rate this item:</li>
-        <li>
-            <i class="fa fa-star color"></i>
-            <i class="fa fa-star color"></i>
-            <i class="fa fa-star color"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
+        <li class="rate-star">
+            @for($i=1; $i<=5; $i++)
+                <i class="fa fa-star {{$i <= $blog->rating_avg ? 'color' : ''}}"></i>
+                @endfor
         </li>
-        <li class="color">(6 votes)</li>
+        <li class="color rate-count">({{$blog->rating_count == 1? '1 vote' : "{$blog->rating_count} votes"}})</li>
+        <!-- <li class="color">({{$blog->rating_count == 1? '1 vote' : $blog->rating_count. ' votes'}})</li> -->
     </ul>
     <ul class="tag">
         <li>TAG:</li>

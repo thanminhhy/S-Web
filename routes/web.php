@@ -56,3 +56,6 @@ Route::post('/frontend/register', [RegisterController::class, 'register'])->name
 //Blog
 Route::get('/frontend/blog/index', [FrontendBlogController::class, 'index'])->name('frontend.blog.list');
 Route::get('/frontend/blog/detail/{blog}', [FrontendBlogController::class, 'showDetail'])->name('frontend.blog.detail');
+Route::middleware(['auth'])->group(function () {
+    Route::post('/frontend/blog/rate/ajax', [FrontendBlogController::class, 'rate'])->name('blog.rate');
+});

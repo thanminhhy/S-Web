@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Home | E-Shopper</title>
     <link href="{{asset("/frontend/css/bootstrap.min.css")}}" rel="stylesheet" />
     <link href="{{asset("/frontend/css/font-awesome.min.css")}}" rel="stylesheet" />
@@ -72,12 +73,71 @@
         @include('frontend.layouts.footer')
     </div>
 
-    <script src="{{asset('js/jquery.js')}}"></script>
-    <script src="{{asset('js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('js/jquery.scrollUp.min.js')}}"></script>
-    <script src="{{asset('js/price-range.js')}}"></script>
-    <script src="{{asset('js/jquery.prettyPhoto.js')}}"></script>
-    <script src="{{asset('js/main.js')}}"></script>
+    <script src="{{asset('frontend/js/jquery.js')}}"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+    <script src="{{asset('frontend/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('frontend/js/jquery.scrollUp.min.js')}}"></script>
+    <script src="{{asset('frontend/js/price-range.js')}}"></script>
+    <script src="{{asset('frontend/js/jquery.prettyPhoto.js')}}"></script>
+    <script src="{{asset('frontend/js/main.js')}}"></script>
+    <script>
+        $(document).ready(function() {
+            //vote
+            $('.ratings_stars').hover(
+                // Handles the mouseover
+                function() {
+                    $(this).prevAll().andSelf().addClass('ratings_hover');
+                    // $(this).nextAll().removeClass('ratings_vote'); 
+                },
+                function() {
+                    $(this).prevAll().andSelf().removeClass('ratings_hover');
+                    // set_votes($(this).parent());
+                }
+            );
+
+            $('.ratings_stars').click(function() {
+                //check login status
+                var isLoggedIn = "{{Auth::check() ? 'true' : 'false'}}";
+
+                if (isLoggedIn) {
+                    var rate = $(this).find("input").val();
+                    var blogId = $(this).closest('.rate').data('id');
+                    // console.log(userId);
+                    if ($(this).hasClass('ratings_over')) {
+                        $('.ratings_stars').removeClass('ratings_over');
+                        $(this).prevAll().andSelf().addClass('ratings_over');
+                    } else {
+                        $(this).prevAll().andSelf().addClass('ratings_over');
+                    }
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{route("blog.rate")}}',
+                        data: {
+                            rate: rate,
+                            blog_id: blogId
+                        },
+                        success: function(data) {
+                            var avg = Math.round(Number(data.rating_avg))
+                            var startsHtml = '';
+                            for (var i = 1; i <= 5; i++) {
+                                var activeClass = i <= data.rating_avg ? 'color' : '';
+                                startsHtml += `<i class='fa fa-star ${activeClass} '></i>`
+                            }
+                            alert(data.message);
+                            $('.rate-np').text(data.rating_avg);
+                            $('.rate-star').html(startsHtml);
+                            $('.rate-count').text(data.rating_count == 1 ? `${data.rating_count} vote` : `${data.rating_count} votes`);
+                            // alert(`${data.message}. Bài viết có số lượng đánh giá là ${data.rating_count} với số điểm đánh giá tổng là ${data.rating_avg}`);
+                        }
+                    });
+                } else {
+                    alert('Vui lòng login để rate');
+                    window.location.href = "{{route('frontend.login')}}"
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -13,6 +13,12 @@ class Blog extends Model
         'title',
         'image',
         'description',
-        'content'
+        'content',
+        'rating_count',
+        'rating_avg'
     ];
+    public function ratings()
+    {
+        return $this->hasMany(BlogRating::class, 'blog_id');
+    }
 }

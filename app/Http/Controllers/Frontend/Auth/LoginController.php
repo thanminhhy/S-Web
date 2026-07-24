@@ -28,7 +28,7 @@ class LoginController extends Controller
         }
 
         if (Auth::attempt($login, $remember)) {
-            return redirect("{{route('frontend.index'}}");
+            return redirect()->route('frontend.index');
         } else {
             return redirect()->back()->withErrors("Email or password is not correct.");
         }
