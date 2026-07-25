@@ -59,3 +59,7 @@ Route::get('/frontend/blog/detail/{blog}', [FrontendBlogController::class, 'show
 Route::middleware(['auth'])->group(function () {
     Route::post('/frontend/blog/rate/ajax', [FrontendBlogController::class, 'rate'])->name('blog.rate');
 });
+//--blog comment--
+Route::middleware(['auth'])->group(function () {
+    Route::post('/frontend/blog/comment/ajax', [FrontendBlogController::class, 'comment'])->name('blog.comment');
+});

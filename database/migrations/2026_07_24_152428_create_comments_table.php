@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->foreignId('blog_id')->constrained('blogs')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('parent_id')->constrained('comments')->onDelete('cascade');
+            $table->foreignId('parent_id')->nullable()->constrained('comments')->onDelete('cascade');
 
             $table->text('comment');
 

@@ -133,65 +133,10 @@
                 <a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
             </div>
         </li>
-        <li class="media">
-            <a class="pull-left" href="#">
-                <img class="media-object" src="images/blog/man-four.jpg" alt="">
-            </a>
-            <div class="media-body">
-                <ul class="sinlge-post-meta">
-                    <li><i class="fa fa-user"></i>Janis Gallagher</li>
-                    <li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-                    <li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
-                </ul>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                <a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
-            </div>
-        </li>
-        <li class="media second-media">
-            <a class="pull-left" href="#">
-                <img class="media-object" src="images/blog/man-three.jpg" alt="">
-            </a>
-            <div class="media-body">
-                <ul class="sinlge-post-meta">
-                    <li><i class="fa fa-user"></i>Janis Gallagher</li>
-                    <li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-                    <li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
-                </ul>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                <a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
-            </div>
-        </li>
-        <li class="media second-media">
-            <a class="pull-left" href="#">
-                <img class="media-object" src="images/blog/man-three.jpg" alt="">
-            </a>
-            <div class="media-body">
-                <ul class="sinlge-post-meta">
-                    <li><i class="fa fa-user"></i>Janis Gallagher</li>
-                    <li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-                    <li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
-                </ul>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                <a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
-            </div>
-        </li>
-        <li class="media second-media">
-            <a class="pull-left" href="#">
-                <img class="media-object" src="images/blog/man-three.jpg" alt="">
-            </a>
-            <div class="media-body">
-                <ul class="sinlge-post-meta">
-                    <li><i class="fa fa-user"></i>Janis Gallagher</li>
-                    <li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-                    <li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
-                </ul>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                <a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
-            </div>
-        </li>
+
     </ul>
 </div><!--/Response-area-->
-<div class="replay-box">
+<div class="replay-box" data-id="{{$blog->id}}">
     <div class="row">
         <div class="col-sm-12">
             <h2>Leave a replay</h2>
@@ -201,8 +146,8 @@
                     <label>Your Name</label>
                 </div>
                 <span>*</span>
-                <textarea name="message" rows="11"></textarea>
-                <a class="btn btn-primary" href="">post comment</a>
+                <textarea name="message" id='cmt-content' rows="11"></textarea>
+                <button class="btn btn-primary" id="comment">Comment</button>
             </div>
         </div>
     </div>

@@ -9,6 +9,9 @@ class Comment extends Model
 {
     use HasFactory;
 
+    //Tự đính kèm thông tin user vào comment để lấy tên và ava
+    protected $with = ['user'];
+
     protected $fillable = [
         'blog_id',
         'user_id',

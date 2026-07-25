@@ -98,7 +98,7 @@
             $('.ratings_stars').click(function() {
                 //check login status
                 var isLoggedIn = "{{Auth::check()}}";
-                alert(isLoggedIn)
+
                 if (isLoggedIn) {
                     var rate = $(this).find("input").val();
                     var blogId = $(this).closest('.rate').data('id');
@@ -136,6 +136,71 @@
                     window.location.href = "{{route('frontend.login')}}"
                 }
             });
+            $('#comment').click(function() {
+                //check login status
+                var isLoggedIn = "{{Auth::check()}}";
+                if (isLoggedIn) {
+                    var cmt = $('#cmt-content').val();
+                    var blogId = $(this).closest('.replay-box').data('id');
+
+                    //<div class="replay-box" data-id="..."> ----- .data('id') 
+                    //<div class="replay-box" data-blog-id="..."> ----- .data('blog-id')
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{route("blog.comment")}}',
+                        data: {
+                            comment: cmt,
+                            blog_id: blogId
+                        },
+                        success: function(data) {
+                            alert(data.messsage);
+                            var comment = data.data;
+                            var userName = comment.user.name;
+                            var userAvatar = comment.user.avatar;
+
+
+
+
+
+                            var newCommentHtml = `<li class="media">
+                                                    <a class="pull-left" href="#">
+                                                        <img class="media-object" src="${userAvatar}" alt="">
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <ul class="sinlge-post-meta">
+                                                            <li><i class="fa fa-user"></i>${userName}</li>
+                                                            <li><i class="fa fa-clock-o"></i> ${data.formatedTime}</li>
+                                                            <li><i class="fa fa-calendar"></i> ${data.formatedDate}</li>
+                                                        </ul>
+                                                        <p>${comment.comment}</p>
+                                                        <a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
+                                                    </div>
+                                                </li>`;
+                            if (comment.parent_id) {
+                                return
+                            } else {
+                                $('.media-list').append(newCommentHtml);
+                            }
+                            //xóa nội dung trong ô cmt
+                            $('#cmt-content').val('');
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 401) {
+                                alert('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại!');
+                                window.location.href = "{{route('frontend.login')}}";
+                            } else {
+                                alert('Có lỗi xảy ra, vui lòng thử lại sau.');
+                            }
+                        }
+                    })
+
+
+                } else {
+                    alert('Vui lòng login để comment');
+                    window.location.href = "{{route('frontend.login')}}"
+                }
+            })
         });
     </script>
 </body>
