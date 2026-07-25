@@ -97,8 +97,8 @@
 
             $('.ratings_stars').click(function() {
                 //check login status
-                var isLoggedIn = "{{Auth::check() ? 'true' : 'false'}}";
-
+                var isLoggedIn = "{{Auth::check()}}";
+                alert(isLoggedIn)
                 if (isLoggedIn) {
                     var rate = $(this).find("input").val();
                     var blogId = $(this).closest('.rate').data('id');
