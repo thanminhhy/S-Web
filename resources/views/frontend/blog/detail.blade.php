@@ -76,63 +76,38 @@
 <div class="response-area">
     <h2>3 RESPONSES</h2>
     <ul class="media-list">
+        @foreach($comments as $parentComment)
         <li class="media">
-
             <a class="pull-left" href="#">
                 <img class="media-object" src="images/blog/man-two.jpg" alt="">
             </a>
             <div class="media-body">
                 <ul class="sinlge-post-meta">
-                    <li><i class="fa fa-user"></i>Janis Gallagher</li>
-                    <li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-                    <li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
+                    <li><i class="fa fa-user"></i>{{$parentComment->user->name}}</li>
+                    <li><i class="fa fa-clock-o"></i>{{$parentComment->created_at->format('h:i A')}}</li>
+                    <li><i class="fa fa-calendar"></i> {{$parentComment->created_at->format('d/m/Y')}}</li>
                 </ul>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <p>{{$parentComment->comment }}</p>
                 <a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
             </div>
         </li>
+        @foreach($parentComment->replies as $reply)
         <li class="media second-media">
             <a class="pull-left" href="#">
                 <img class="media-object" src="images/blog/man-three.jpg" alt="">
             </a>
             <div class="media-body">
                 <ul class="sinlge-post-meta">
-                    <li><i class="fa fa-user"></i>Janis Gallagher</li>
-                    <li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-                    <li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
+                    <li><i class="fa fa-user"></i>{{$reply->user->name}}</li>
+                    <li><i class="fa fa-clock-o"></i> {{$reply->created_at->format('h:i:A')}}</li>
+                    <li><i class="fa fa-calendar"></i> {{$reply->created_at->format('d/m/Y')}}</li>
                 </ul>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <p>{{$reply->comment}}</p>
                 <a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
             </div>
         </li>
-        <li class="media second-media">
-            <a class="pull-left" href="#">
-                <img class="media-object" src="images/blog/man-three.jpg" alt="">
-            </a>
-            <div class="media-body">
-                <ul class="sinlge-post-meta">
-                    <li><i class="fa fa-user"></i>Janis Gallagher</li>
-                    <li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-                    <li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
-                </ul>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                <a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
-            </div>
-        </li>
-        <li class="media second-media">
-            <a class="pull-left" href="#">
-                <img class="media-object" src="images/blog/man-three.jpg" alt="">
-            </a>
-            <div class="media-body">
-                <ul class="sinlge-post-meta">
-                    <li><i class="fa fa-user"></i>Janis Gallagher</li>
-                    <li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-                    <li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
-                </ul>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                <a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
-            </div>
-        </li>
+        @endforeach
+        @endforeach
 
     </ul>
 </div><!--/Response-area-->
