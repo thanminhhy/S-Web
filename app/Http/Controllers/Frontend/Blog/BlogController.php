@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Blog;
 use App\Models\BlogRating;
+use App\Models\Comment;
 
 class BlogController extends Controller
 {
@@ -28,8 +29,12 @@ class BlogController extends Controller
                 $userRating = $rating->rating;
             }
         }
-        // dd($userRating);
-        return view('frontend.blog.detail', compact('blog', 'userRating'));
+        $comments = Comment::where('blog_id', $blog->id)
+            ->whereNull('parent_id') // tập hợp comment cha cho query
+            ->with(['replies.user']) // tập hợp mảng các comment con thêm vào query
+            ->latest()
+            ->paginate(5);
+        return view('frontend.blog.detail', compact('blog', 'userRating', 'comments'));
     }
     public function rate(Request $request)
     {
@@ -75,6 +80,50 @@ class BlogController extends Controller
             'message' => 'Đánh giá bài viết thành công!',
             'rating_count' => $ratingCount,
             'rating_avg' => $ratingAvg
+        ]);
+    }
+
+    public function comment(Request $request)
+    {
+        //Check is user logged in
+        if (!Auth::Check()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Bạn cần đăng nhập để có thể thực hiện bình luận!'
+            ], 401);
+        }
+        //Validate request
+        $request->validate([
+            'blog_id' => 'required|exists:blogs,id',
+            'comment' => 'required',
+            'parent_id' => 'nullable|integer'
+        ]);
+
+        //declare some necessary varibles
+        $userId = Auth::id();
+        $blogId = $request->blog_id;
+        $comment = $request->comment;
+        $parentId = $request->parent_id ?? null;
+        // dd($userId, $blogId, $comment, $parentId);
+
+        //Save comment to database
+        $cmtData = Comment::Create(
+            [
+                'blog_id' => $blogId,
+                'user_id' => $userId,
+                'parent_id' => $parentId,
+                'comment' => $comment
+            ]
+        );
+
+        $cmtData->load('user');
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Bình luận bài viết thành công!',
+            'data' => $cmtData,
+            'formatedTime' => $cmtData->created_at->format('h:i A'),
+            'formatedDate' => $cmtData->created_at->format('d/m/Y')
         ]);
     }
 }
