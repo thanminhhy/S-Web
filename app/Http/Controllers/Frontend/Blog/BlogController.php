@@ -28,13 +28,12 @@ class BlogController extends Controller
             if ($rating) {
                 $userRating = $rating->rating;
             }
-
-            $comments = Comment::where('blog_id', $blog->id)
-                ->whereNull('parent_id') // tập hợp comment cha cho query
-                ->with(['replies.user']) // tập hợp mảng các comment con thêm vào query
-                ->latest()
-                ->get();
         }
+        $comments = Comment::where('blog_id', $blog->id)
+            ->whereNull('parent_id') // tập hợp comment cha cho query
+            ->with(['replies.user']) // tập hợp mảng các comment con thêm vào query
+            ->latest()
+            ->paginate(5);
         return view('frontend.blog.detail', compact('blog', 'userRating', 'comments'));
     }
     public function rate(Request $request)

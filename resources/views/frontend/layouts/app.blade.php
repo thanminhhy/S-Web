@@ -136,15 +136,24 @@
                     window.location.href = "{{route('frontend.login')}}"
                 }
             });
-            $('#comment').click(function() {
+
+            //-----------------Comment Area----------------
+            //======  Parent comment
+            $(document).on('submit', '.ajax-comment-form', function(e) {
+                e.preventDefault();
+
                 //check login status
                 var isLoggedIn = "{{Auth::check()}}";
                 if (isLoggedIn) {
                     var cmt = $('#cmt-content').val();
-                    var blogId = $(this).closest('.replay-box').data('id');
 
                     //<div class="replay-box" data-id="..."> ----- .data('id') 
                     //<div class="replay-box" data-blog-id="..."> ----- .data('blog-id')
+                    var blogId = $(this).closest('.replay-box').data('id');
+                    let form = $(this);
+                    let submitBtn = form.find('button[type="submit"]');
+
+
 
                     $.ajax({
                         type: 'POST',
@@ -154,14 +163,10 @@
                             blog_id: blogId
                         },
                         success: function(data) {
-                            alert(data.messsage);
+                            alert(data.message);
                             var comment = data.data;
                             var userName = comment.user.name;
                             var userAvatar = comment.user.avatar;
-
-
-
-
 
                             var newCommentHtml = `<li class="media">
                                                     <a class="pull-left" href="#">
@@ -174,16 +179,37 @@
                                                             <li><i class="fa fa-calendar"></i> ${data.formatedDate}</li>
                                                         </ul>
                                                         <p>${comment.comment}</p>
-                                                        <a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
+                                                        <button class="btn btn-primary btn-toggle-reply" type="button" data-id="${comment.id}"'><i class="fa fa-reply"></i>Replay</button>
                                                     </div>
+
+                                                    <!-- khung form bị ẩn-->
+                                                    <div class="reply-form-wrapper mt-3 hide" id="reply-form-box-${comment.id}">
+                                                        <form class="ajax-reply-form">
+                                                            @csrf
+                                                            <input type="hidden" name="blog_id" value="${blogId}">
+                                                            <input type="hidden" name="parent_id" value="${comment.id}">
+
+                                                            <div class="text-area">
+                                                                <div class="blank-arrow">
+                                                                    <label>Your Name</label>
+                                                                </div>
+                                                                <span>*</span>
+                                                                <textarea name="comment" id='child-comment-content-${comment.id}' rows="2"></textarea>
+                                                                <button class="btn btn-primary" type="submit" disabled>Comment</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                    <!-- khung chứa các comment con mới-->
+                                                    <div id="replies-for-${comment.id}"></div>
                                                 </li>`;
-                            if (comment.parent_id) {
-                                return
-                            } else {
-                                $('.media-list').append(newCommentHtml);
-                            }
+
+                            $('.media-list').prepend(newCommentHtml);
+
                             //xóa nội dung trong ô cmt
                             $('#cmt-content').val('');
+
+                            submitBtn.prop('disabled', true);
                         },
                         error: function(xhr) {
                             if (xhr.status === 401) {
@@ -200,6 +226,119 @@
                     alert('Vui lòng login để comment');
                     window.location.href = "{{route('frontend.login')}}"
                 }
+            })
+
+            //Disable submit parent-comment button when comment box is empty
+            $(document).on('input', 'textarea[id^="cmt-content"]', function() {
+                let content = $(this).val().trim();
+                let submitBtn = $(this).closest('form').find('button[type="submit"]');
+
+                submitBtn.prop('disabled', content.length === 0)
+            })
+
+            $(document).on('keydown', 'textarea[id^="cmt-content"]', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    let content = $(this).val().trim();
+                    let form = $(this).closest('form');
+                    if (content.length > 0) {
+                        form.submit();
+                    }
+                }
+            })
+
+
+            //====== Child comment
+            $(document).on('click', '.btn-toggle-reply', function(e) {
+                e.preventDefault();
+                let parentId = $(this).data('id');
+
+                $('#reply-form-box-' + parentId).toggleClass('hide');
+            })
+
+
+            //Disable submit child-comment button when comment box is empty
+            $(document).on('input', 'textarea[id^="child-comment-content-"]', function() {
+                let content = $(this).val().trim();
+                let submitBtn = $(this).closest('form').find('button[type="submit"]');
+
+                submitBtn.prop('disabled', content.length === 0);
+            })
+
+            //Handle enter key when user push enter, UI should submit form
+            $(document).on('keydown', 'textarea[id^="child-comment-content-"]', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    let content = $(this).val().trim();
+                    let form = $(this).closest('form');
+
+                    if (content.length > 0) {
+                        form.submit();
+                    }
+                }
+            })
+
+            $(document).on('submit', '.ajax-reply-form', function(e) {
+                e.preventDefault();
+                var isLoggedIn = "{{Auth::check()}}";
+
+                if (isLoggedIn) {
+                    let form = $(this);
+                    let submitBtn = form.find('button[type="submit"]');
+
+                    //Vô hiệu hóa nút tạm thời tránh spam nút
+                    submitBtn.prop('disabled', true).text('Sending...');
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{route("blog.comment")}}',
+                        data: form.serialize(),
+                        success: function(data) {
+                            alert(data.message);
+                            var comment = data.data;
+                            var userName = comment.user.name;
+                            var userAvatar = comment.user.avatar;
+                            console.log(comment, userName, userAvatar);
+
+                            var newCommentHtml = `<ul class="media second-media">
+                                                <li>
+                                                    <a class="pull-left" href="#">
+                                                        <img class="media-object" src="${userAvatar}" alt="">
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <ul class="sinlge-post-meta">
+                                                            <li><i class="fa fa-user"></i>${userName}</li>
+                                                            <li><i class="fa fa-clock-o"></i> ${data.formatedTime}</li>
+                                                            <li><i class="fa fa-calendar"></i> ${data.formatedDate}</li>
+                                                        </ul>
+                                                        <p>${comment.comment}</p>
+                                                    </div>
+                                                </li>
+                                                </ul>`;
+
+                            $(`#replies-for-${comment.parent_id}`).append(newCommentHtml);
+
+                            //xóa nội dung trong ô cmt
+                            $(`#child-comment-content-${comment.parent_id}`).val('');
+
+                            submitBtn.prop('disabled', true).text('Comment');
+
+                            //Ẩn ô cmt
+                            $(`#reply-form-box-${comment.parent_id}`).toggleClass('hide');
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 401) {
+                                alert('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại!');
+                                window.location.href = "{{route('frontend.login')}}";
+                            } else {
+                                alert('Có lỗi xảy ra, vui lòng thử lại sau.');
+                            }
+                        }
+                    })
+                } else {
+                    alert('Vui lòng login để comment');
+                    window.location.href = "{{route('frontend.login')}}"
+                }
+
             })
         });
     </script>
