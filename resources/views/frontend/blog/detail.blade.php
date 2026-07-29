@@ -55,7 +55,7 @@
 
 <!-- ----------------------------Respone Area--------------------------- -->
 <div class="response-area">
-    <h2>3 RESPONSES</h2>
+    <h2>{{$comments->count()}} RESPONSES</h2>
     <div class="replay-box" data-id="{{$blog->id}}">
         <div class="row">
             <div class="col-sm-12">
@@ -88,6 +88,14 @@
                 </ul>
                 <p>{{$parentComment->comment }}</p>
                 <button class="btn btn-primary btn-toggle-reply" data-id="{{$parentComment->id}}"><i class="fa fa-reply"></i>Replay</button>
+                @if($parentComment->replies->count() > 0)
+                <a href="javascript:void(0)" class="btn-toggle-replies-list ml-2" data-id="{{ $parentComment->id }}" style="text-decoration: none; font-size: 13px; color: #fe980f; margin-left: 10px;">
+                    <i class="fa fa-comments"></i>
+                    <span class="replies-count-text-{{ $parentComment->id }}">
+                        Xem {{ $parentComment->replies->count() }} câu trả lời
+                    </span>
+                </a>
+                @endif
             </div>
 
             <div class="reply-form-wrapper mt-3 hide" id="reply-form-box-{{$parentComment->id}}">
@@ -107,7 +115,7 @@
                 </form>
             </div>
 
-            <div id="replies-for-{{$parentComment->id}}">
+            <div id="replies-for-{{$parentComment->id}}" class="replies-container" style="display: none; margin-left: 50px;">
                 @foreach($parentComment->replies as $reply)
                 <ul class="media second-media">
                     <li>

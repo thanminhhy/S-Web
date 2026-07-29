@@ -247,6 +247,15 @@
                 }
             })
 
+            //Toggle replies on parent comment
+            $(document).on('click', '.btn-toggle-replies-list', function(e) {
+                e.preventDefault();
+                let parentId = $(this).data('id');
+                let repliesBox = $('#replies-for-' + parentId);
+
+                repliesBox.slideToggle(200);
+            })
+
 
             //====== Child comment
             $(document).on('click', '.btn-toggle-reply', function(e) {
@@ -315,15 +324,32 @@
                                                 </li>
                                                 </ul>`;
 
+                            //1. append new child comment to list
                             $(`#replies-for-${comment.parent_id}`).append(newCommentHtml);
 
-                            //xóa nội dung trong ô cmt
-                            $(`#child-comment-content-${comment.parent_id}`).val('');
+                            //Xử lý nút ẩn hiện cmt con
+                            let toggleBtn = $(`.btn-toggle-replies-list[data-id="${comment.parent_id}"]`);
+                            let totalReplies = $(`#replies-for-${comment.parent_id} .second-media`).length
 
+                            //toggleBtn.length mà lớn hơn 0 có nghĩa là đã còn cmt con còn sai thì chưa có
+                            if (toggleBtn.length > 0) {
+                                toggleBtn.find(`.replies-count-text-${comment.parent_id}`).text(`Xem ${totalReplies} câu trả lời`);
+                            } else {
+                                newToggleBtnHtml = `<a href="javascript:void(0)" class="btn-toggle-replies-list ml-2" data-id="${comment.parent_id}" style="text-decoration: none; font-size: 13px; color: #fe980f; margin-left: 10px;">
+                                                        <i class="fa fa-comments"></i>
+                                                        <span class="replies-count-text-${comment.parent_id}">
+                                                            Xem ${totalReplies} câu trả lời
+                                                        </span>
+                                                    </a>`;
+                                $(`.btn-toggle-reply[data-id="${comment.parent_id}"]`).after(newToggleBtnHtml);
+                            }
+                            //xóa nội dung trong ô cmt và vô hiệu hóa nút cmt
+                            $(`#child-comment-content-${comment.parent_id}`).val('');
                             submitBtn.prop('disabled', true).text('Comment');
 
-                            //Ẩn ô cmt
+                            //Ẩn ô cmt và hiển thị danh sách cmt con
                             $(`#reply-form-box-${comment.parent_id}`).toggleClass('hide');
+                            $(`#replies-for-${comment.parent_id}`).slideDown(200);
                         },
                         error: function(xhr) {
                             if (xhr.status === 401) {
