@@ -1,4 +1,8 @@
 @extends('frontend.layouts.app')
+@section('menu-left')
+@include('frontend.layouts.menu-left')
+@endsection
+
 @section('content')
 
 <div class="features_items">

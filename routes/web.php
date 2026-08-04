@@ -10,6 +10,7 @@ use App\Http\Controllers\Frontend\HomeController as FrontendHomeController;
 use App\Http\Controllers\Frontend\Auth\LoginController;
 use App\Http\Controllers\Frontend\Auth\RegisterController;
 use App\Http\Controllers\Frontend\Blog\BlogController as FrontendBlogController;
+use App\Http\Controllers\Frontend\Account\ProfileController;
 
 
 Route::get('/', function () {
@@ -62,4 +63,12 @@ Route::middleware(['auth'])->group(function () {
 //--blog comment--
 Route::middleware(['auth'])->group(function () {
     Route::post('/frontend/blog/comment/ajax', [FrontendBlogController::class, 'comment'])->name('blog.comment');
+});
+
+//Acount Management
+Route::middleware(['auth'])->group(function () {
+    Route::get('/frontend/myAccount', [ProfileController::class, 'showProfile'])->name('frontend.myAccount');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::post('/frontend/myAccount/{user}', [ProfileController::class, 'updateProfile'])->name('frontend.updateAccount');
 });
