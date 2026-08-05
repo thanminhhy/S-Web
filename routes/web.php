@@ -50,6 +50,9 @@ Route::get('/frontend/index', [FrontendHomeController::class, 'index'])->name('f
 Route::get('/frontend/login', [LoginCOntroller::class, 'showLogin'])->name('frontend.login');
 Route::post('/frontend/login', [LoginController::class, 'login'])->name('frontend.login');
 
+//Logout
+Route::post('/frontend/logout', [LoginController::class, 'logout'])->name('frontend.logout');
+
 //Register
 Route::get('/frontend/register', [Registercontroller::class, 'showRegister'])->name('frontend.register');
 Route::post('/frontend/register', [RegisterController::class, 'register'])->name('frontend.register');

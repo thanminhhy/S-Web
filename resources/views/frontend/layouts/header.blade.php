@@ -64,7 +64,17 @@
 								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
 								@if (Auth::check())
 								<li><a href="{{route('frontend.myAccount')}}"><i class="fa fa-user"></i> Account</a></li>
-								<li><a href="{{route('frontend.login')}}">Logout</a></li>
+								<li>
+									<a href="{{route('frontend.logout')}}"
+										onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+										Logout
+									</a>
+
+									<form id="logout-form" action="{{route('frontend.logout')}}" method="POST" style="display: none">
+										@csrf
+									</form>
+								</li>
+
 								@else
 								<li><a href="{{route('frontend.login')}}"><i class="fa fa-lock"></i> Login</a></li>
 								<li><a href="{{route('frontend.register')}}">Register</a></li>
@@ -98,14 +108,6 @@
 										<li><a href="product-details.html">Product Details</a></li>
 										<li><a href="checkout.html">Checkout</a></li>
 										<li><a href="cart.html">Cart</a></li>
-										@if (Auth::check())
-										<li><a href="{{route('frontend.login')}}">My Profile</a></li>
-										<li><a href="{{route('frontend.login')}}">Logout</a></li>
-										@else
-										<li><a href="{{route('frontend.login')}}">Login</a></li>
-										<li><a href="{{route('frontend.register')}}">Register</a></li>
-										@endif
-
 									</ul>
 								</li>
 								<li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
