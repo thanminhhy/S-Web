@@ -75,3 +75,6 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::post('/frontend/myAccount/{user}', [ProfileController::class, 'updateProfile'])->name('frontend.updateAccount');
 });
+Route::middleware(['auth'])->group(function () {
+    Route::get('/frontend/myAccount/myProduct', [ProfileController::class, 'showMyProduct'])->name('frontend.myProduct');
+});
