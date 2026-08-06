@@ -11,6 +11,7 @@ use App\Http\Controllers\Frontend\Auth\LoginController;
 use App\Http\Controllers\Frontend\Auth\RegisterController;
 use App\Http\Controllers\Frontend\Blog\BlogController as FrontendBlogController;
 use App\Http\Controllers\Frontend\Account\ProfileController;
+use App\Http\Controllers\Frontend\Account\MyProudctController;
 
 
 Route::get('/', function () {
@@ -76,5 +77,5 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/frontend/myAccount/{user}', [ProfileController::class, 'updateProfile'])->name('frontend.updateAccount');
 });
 Route::middleware(['auth'])->group(function () {
-    Route::get('/frontend/myAccount/myProduct', [ProfileController::class, 'showMyProduct'])->name('frontend.myProduct');
+    Route::get('/frontend/myAccount/myProduct', [MyProudctController::class, 'index'])->name('frontend.myProduct');
 });
