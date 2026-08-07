@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Frontend\Account;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProductRequest\ProductRequest;
+use App\Models\Product;
 
 class MyProudctController extends Controller
 {
@@ -12,7 +14,8 @@ class MyProudctController extends Controller
      */
     public function index()
     {
-        return view('frontend.account.myProduct');
+        $products = Product::Paginate(6);
+        return view('frontend.account.myProduct', compact('products'));
     }
 
     /**
@@ -26,9 +29,9 @@ class MyProudctController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        //
+        $data = $request->validated();
     }
 
     /**
