@@ -24,8 +24,15 @@ class ProductRequest extends FormRequest
     {
         return [
             'name' => 'required|min:2|max:255|string',
-            'image' => 'image|mimes:jpg,jpeg,png|max:2048',
-            'price' => 'required|min:0|numeric'
+            'images' => 'required|array|min:1|max:3',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
+            'price' => 'required|min:0|numeric',
+            'status' => 'required|string|in:new,sale',
+            'sale' => 'required_if:status,sale|numeric|min:0|max:100',
+            'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'required|exists:brands,id',
+            'company' => 'nullable|max:255|string',
+            'detail' => 'nullable|string'
         ];
     }
     public function messages()
@@ -36,7 +43,22 @@ class ProductRequest extends FormRequest
             'string' => ':attribute phải là một chuỗi ký tự',
             'image' => ':attribute phải là dạng ảnh',
             'mimes' => ':attribute phải thuộc các dạng file ảnh jpeg,jpg và png',
-            'numeric' => ':attribute phải thuộc dạng số'
+            'numeric' => ':attribute phải thuộc dạng số',
+            'images.required' => 'Vui lòng chọn ít nhất 1 ảnh',
+            'images.max' => 'Bạn chỉ được phép tải lên tối đa 3 ảnh',
+            'images.*.image' => 'File tải lên phải là định dạng ảnh',
+            'images.*.max' => 'Kích thước mỗi fiel ảnh không được quá 2MB',
+        ];
+    }
+    public function attributes()
+    {
+        return [
+            'name' => 'Tên sản phẩm',
+            'image' => 'Ảnh sản phẩm',
+            'price' => 'Giá sản phẩm',
+            'status' => 'Tình trạng sản phẩm',
+            'category_id' => 'Danh mục sản phẩm',
+            'brand_id' => 'Thương hiệu sản phẩm'
         ];
     }
 }

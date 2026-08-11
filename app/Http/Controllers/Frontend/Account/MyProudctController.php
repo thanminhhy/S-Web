@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest\ProductRequest;
 use App\Models\Product;
+use App\Models\Category;
+use App\Models\Brand;
+use Intervention\Image\Laravel\Facades\Image;
 
 class MyProudctController extends Controller
 {
@@ -23,7 +26,9 @@ class MyProudctController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::get();
+        $brands = Brand::get();
+        return view('frontend.account.createProduct', compact('categories', 'brands'));
     }
 
     /**
@@ -32,6 +37,8 @@ class MyProudctController extends Controller
     public function store(ProductRequest $request)
     {
         $data = $request->validated();
+        dd($data);
+        // return redirect()->back();
     }
 
     /**
