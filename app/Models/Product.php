@@ -13,7 +13,7 @@ class Product extends Model
         'status',
         'sale',
         'company',
-        'image',
+        'images',
         'detail',
         'brand_id',
         'category_id',

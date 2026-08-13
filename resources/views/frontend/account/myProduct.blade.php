@@ -46,15 +46,20 @@
             @else
             @foreach($products as $product)
             <tr>
-                <td class="cart_product">
-                    <a href=""><img src="images/cart/one.png" alt=""></a>
+                <td>
+                    {{$product->id}}
                 </td>
                 <td class="cart_description">
-                    <h4><a href="">Colorblock Scuba</a></h4>
+                    <h4><a href="">{{$product->name}}</a></h4>
 
                 </td>
+                <td class="cart_product">
+                    @foreach(json_decode($product->images) as $image)
+                    <a href=""><img src="{{asset('upload/product/small/'.$image)}}" alt=""></a>
+                    @endforeach
+                </td>
                 <td class="cart_price">
-                    <p>$59</p>
+                    <p>{{$product->price}} VND</p>
                 </td>
 
                 <td class="cart_total">

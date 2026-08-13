@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend\Account;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest\ProductRequest;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
@@ -17,7 +18,9 @@ class MyProudctController extends Controller
      */
     public function index()
     {
-        $products = Product::Paginate(6);
+        $userId = Auth::id();
+        $products = Product::where('user_id', $userId)->Paginate(6);
+        // dd($products->toArray());
         return view('frontend.account.myProduct', compact('products'));
     }
 
@@ -37,8 +40,28 @@ class MyProudctController extends Controller
     public function store(ProductRequest $request)
     {
         $data = $request->validated();
-        dd($data);
-        // return redirect()->back();
+        $data['user_id'] = Auth::id();
+        if ($request->hasFile('images')) {
+            $data['images'] = [];
+            foreach ($request->file('images') as $file) {
+                $image = Image::read($file);
+                $fileName = time() . '_' . $file->getClientOriginalName();
+
+                $pathSmall = public_path('upload/product/small/' . $fileName);
+                $pathMedium = public_path('upload/product/medium/' . $fileName);
+                $pathFull = public_path('upload/product/full/' . $fileName);
+
+                $image->resize(50, 70)->save($pathSmall);
+                $image->resize(120, 120)->save($pathMedium);
+                $image->save($pathFull);
+                $data['images'][] = $fileName;
+            }
+            $data['images'] = json_encode($data['images']);
+        }
+
+        Product::create($data);
+
+        return redirect()->route('frontend.myProduct')->with('success', 'Product has been created successfully!');
     }
 
     /**

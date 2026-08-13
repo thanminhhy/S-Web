@@ -86,7 +86,7 @@
             </div>
 
             <div class="row mb-3 align-items-center">
-                <input type="text" name="compnay" placeholder="Company Profile" value="" />
+                <input type="text" name="company" placeholder="Company Profile" value="" />
                 @error('company')
                 <div class="text-danger">{{$message}}</div>
                 @enderror

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('status');
             $table->integer('sale')->default(0);
             $table->string('company')->nullable();
-            $table->text('image');
+            $table->text('images');
             $table->text('detail')->nullable();
             $table->foreignId('brand_id')->constrained('brands')->onDelete('cascade');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');

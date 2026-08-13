@@ -22,3 +22,10 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+/public/upload/product/full/*
+/public/upload/product/medium/*
+/public/upload/product/small/*
+
+!/public/upload/product/full/.gitkeep
+!/public/upload/product/medium/.gitkeep
+!/public/upload/product/small/.gitkeep
