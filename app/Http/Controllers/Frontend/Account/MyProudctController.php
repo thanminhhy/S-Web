@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend\Account;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use App\Http\Requests\ProductRequest\ProductRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
@@ -43,13 +44,22 @@ class MyProudctController extends Controller
         $data['user_id'] = Auth::id();
         if ($request->hasFile('images')) {
             $data['images'] = [];
+            // 1. Định nghĩa các đường dẫn thư mục
+            $pathSmallFolder  = public_path('upload/product/small');
+            $pathMediumFolder = public_path('upload/product/medium');
+            $pathFullFolder   = public_path('upload/product/full');
+
+            // 2. Tự động kiểm tra & tạo thư mục nếu chưa có (phân quyền 0755, tạo cả cây thư mục cha)
+            File::ensureDirectoryExists($pathSmallFolder);
+            File::ensureDirectoryExists($pathMediumFolder);
+            File::ensureDirectoryExists($pathFullFolder);
             foreach ($request->file('images') as $file) {
                 $image = Image::read($file);
                 $fileName = time() . '_' . $file->getClientOriginalName();
 
-                $pathSmall = public_path('upload/product/small/' . $fileName);
-                $pathMedium = public_path('upload/product/medium/' . $fileName);
-                $pathFull = public_path('upload/product/full/' . $fileName);
+                $pathSmall = $pathSmallFolder . '/' . $fileName;
+                $pathMedium = $pathMediumFolder . '/' . $fileName;
+                $pathFull = $pathFullFolder . '/' . $fileName;
 
                 $image->resize(50, 70)->save($pathSmall);
                 $image->resize(120, 120)->save($pathMedium);
