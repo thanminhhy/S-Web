@@ -55,16 +55,17 @@ class MyProudctController extends Controller
             File::ensureDirectoryExists($pathFullFolder);
             foreach ($request->file('images') as $file) {
                 $fileName = time() . '_' . $file->getClientOriginalName();
+                $cleanName = str_replace(' ', '_', $fileName);
 
-                $pathSmall = $pathSmallFolder . '/' . $fileName;
-                $pathMedium = $pathMediumFolder . '/' . $fileName;
-                $pathFull = $pathFullFolder . '/' . $fileName;
+                $pathSmall = $pathSmallFolder . '/' . $cleanName;
+                $pathMedium = $pathMediumFolder . '/' . $cleanName;
+                $pathFull = $pathFullFolder . '/' . $cleanName;
 
-                $file->move($pathFullFolder, $fileName);
+                $file->move($pathFullFolder, $cleanName);
                 Image::read($pathFull)->resize(120, 120)->save($pathMedium);
                 Image::read($pathFull)->resize(50, 70)->save($pathSmall);
 
-                $data['images'][] = $fileName;
+                $data['images'][] = $cleanName;
             }
             $data['images'] = json_encode($data['images']);
         }
@@ -133,16 +134,17 @@ class MyProudctController extends Controller
 
             foreach ($request->file('images') as $file) {
                 $fileName = time() . '_' . $file->getClientOriginalName();
+                $cleanName = str_replace(' ', '_', $fileName);
 
-                $pathSmall = $pathSmallFolder . '/' . $fileName;
-                $pathMedium = $pathMediumFolder . '/' . $fileName;
-                $pathFull = $pathFullFolder . '/' . $fileName;
+                $pathSmall = $pathSmallFolder . '/' . $cleanName;
+                $pathMedium = $pathMediumFolder . '/' . $cleanName;
+                $pathFull = $pathFullFolder . '/' . $cleanName;
 
-                $file->move($pathFullFolder, $fileName);
+                $file->move($pathFullFolder, $cleanName);
                 Image::read($pathFull)->resize(120, 120)->save($pathMedium);
                 Image::read($pathFull)->resize(50, 70)->save($pathSmall);
 
-                $listImages[] = $fileName;
+                $listImages[] = $cleanName;
             }
         }
         // $data['images'] = $listImages;
