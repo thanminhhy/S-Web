@@ -2498,6 +2498,12 @@ textarea {
     margin-bottom: 10px;
     flex-wrap: wrap;
 }
+#old-images {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
 .preview-box {
     width: 200px;
     overflow: hidden;
@@ -2511,4 +2517,25 @@ textarea {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.preview-update-box {
+    overflow: hidden;
+    position: relative;
+}
+
+.preview-update-box img {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    /* height: 100%; */
+    object-fit: cover;
+}
+
+.preview-update-box .update-checkbox input[type="checkbox"] {
+    width: 13px;
+    height: 13px;
+    cursor: pointer;
+    margin-bottom: 0px;
+    transform: scale(0.85);
 }

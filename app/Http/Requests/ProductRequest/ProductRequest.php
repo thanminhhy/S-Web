@@ -22,10 +22,8 @@ class ProductRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'name' => 'required|min:2|max:255|string',
-            'images' => 'required|array|min:1|max:3',
-            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
             'price' => 'required|min:0|numeric',
             'status' => 'required|string|in:new,sale',
             'sale' => 'required_if:status,sale|numeric|min:0|max:100',
@@ -34,6 +32,16 @@ class ProductRequest extends FormRequest
             'company' => 'nullable|max:255|string',
             'detail' => 'nullable|string'
         ];
+
+        if ($this->method('post') && !$this->route('product')) {
+            $rules['images'] = 'required|array|min:1|max:3';
+            $rules['images.*'] = 'image|mimes:jpg,jpeg,png,webp|max:2048';
+        } else {
+            $rules['images'] = 'nullable|array|min:1|max:3';
+            $rules['images.*'] = 'image|mimes:jpg,jpeg,png,webp|max:2048';
+        }
+
+        return $rules;
     }
     public function messages()
     {

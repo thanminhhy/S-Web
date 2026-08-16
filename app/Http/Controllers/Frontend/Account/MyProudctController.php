@@ -54,16 +54,16 @@ class MyProudctController extends Controller
             File::ensureDirectoryExists($pathMediumFolder);
             File::ensureDirectoryExists($pathFullFolder);
             foreach ($request->file('images') as $file) {
-                $image = Image::read($file);
                 $fileName = time() . '_' . $file->getClientOriginalName();
 
                 $pathSmall = $pathSmallFolder . '/' . $fileName;
                 $pathMedium = $pathMediumFolder . '/' . $fileName;
                 $pathFull = $pathFullFolder . '/' . $fileName;
 
-                $image->resize(50, 70)->save($pathSmall);
-                $image->resize(120, 120)->save($pathMedium);
-                $image->save($pathFull);
+                $file->move($pathFullFolder, $fileName);
+                Image::read($pathFull)->resize(120, 120)->save($pathMedium);
+                Image::read($pathFull)->resize(50, 70)->save($pathSmall);
+
                 $data['images'][] = $fileName;
             }
             $data['images'] = json_encode($data['images']);
@@ -85,17 +85,81 @@ class MyProudctController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Product $product)
     {
-        //
+        $categories = Category::get();
+        $brands = Brand::get();
+        return view('frontend.account.editProduct', compact('product', 'categories', 'brands'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProductRequest $request, Product $product)
     {
-        //
+        //1. Lấy danh sách images từ db
+        $listImages = json_decode($product->images, true) ?? [];
+        $data = $request->validated();
+
+        //2. Check xem có hình cần xóa khi udpate không để xử lí
+        if ($request->has('hinhxoa')) {
+            foreach ($request->hinhxoa as $imageToDelete) {
+                if (($key = array_search($imageToDelete, $listImages)) !== false) {
+                    //xóa file vật lý bằng hàm tự viết
+                    $this->deletePhysicalImages($listImages[$key]);
+
+                    //xóa tên file khỏi mảng theo vị trí index tìm ra tại $key
+                    unset($listImages[$key]);
+                }
+            }
+            //Sắp xếp lại thứ tự mảng
+            $listImages = array_values($listImages);;
+        }
+
+        //Đếm số lượng file ảnh thêm mới
+        $newImagesCount = $request->hasFile('images') ? count($request->file('images')) : 0;
+
+        //3. Kiểm tra nếu số lượng ảnh cũ và mới có quá 3 ảnh không
+        if (count($listImages) + $newImagesCount > 3) {
+            return redirect()->back()->withInput()
+                ->withErrors(['images' => 'Tổng số lượng ảnh(ảnh cũ giữ lại + ảnh mới) không được quá 3 hình']);
+        }
+
+        //4. Kiểm tra có thêm ảnh mới không để xử lí thêm vào db
+        if ($request->hasFile('images')) {
+            $pathSmallFolder = public_path('upload/product/small');
+            $pathMediumFolder = public_path('upload/product/medium');
+            $pathFullFolder = public_path('upload/product/full');
+
+            foreach ($request->file('images') as $file) {
+                $fileName = time() . '_' . $file->getClientOriginalName();
+
+                $pathSmall = $pathSmallFolder . '/' . $fileName;
+                $pathMedium = $pathMediumFolder . '/' . $fileName;
+                $pathFull = $pathFullFolder . '/' . $fileName;
+
+                $file->move($pathFullFolder, $fileName);
+                Image::read($pathFull)->resize(120, 120)->save($pathMedium);
+                Image::read($pathFull)->resize(50, 70)->save($pathSmall);
+
+                $listImages[] = $fileName;
+            }
+        }
+        // $data['images'] = $listImages;
+        $data['images'] = json_encode(array_values($listImages));
+        $product->update($data);
+        return redirect()->route('frontend.myProduct')->with('success', 'Update product successfully!');
+    }
+
+    private function deletePhysicalImages($fileName)
+    {
+        $folders = ['full', 'medium', 'small'];
+        foreach ($folders as $folder) {
+            $filePath = public_path("upload/product/{$folder}/{$fileName}");
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
     }
 
     /**

@@ -54,16 +54,18 @@
 
                 </td>
                 <td class="cart_product">
+                    @if(is_array(json_decode($product->images)))
                     @foreach(json_decode($product->images) as $image)
                     <a href=""><img src="{{asset('upload/product/small/'.$image)}}" alt=""></a>
                     @endforeach
+                    @endif
                 </td>
                 <td class="cart_price">
                     <p>{{$product->price}} VND</p>
                 </td>
 
                 <td class="cart_total">
-                    <a>edit</a>
+                    <a href="{{route('frontend.showEditProductForm',$product->id)}}">edit</a>
                     <a>delete</a>
                 </td>
             </tr>

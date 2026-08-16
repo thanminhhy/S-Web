@@ -88,3 +88,9 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::post('/frontend/myAccount/myProduct/store', [MyProudctController::class, 'store'])->name('frontend.createProduct');
 });
+Route::middleware(['auth'])->group(function () {
+    Route::get('/frontend/myAccount/myProduct/EditProduct/{product}', [MyProudctController::class, 'Edit'])->name('frontend.showEditProductForm');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::post('/frontend/myAccount/myProduct/EditProduct/{product}', [MyProudctController::class, 'Update'])->name('frontend.updateProduct');
+});
