@@ -13,6 +13,10 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'id_country');
+    }
     /**
      * The attributes that are mass assignable.
      *
@@ -22,7 +26,9 @@ class User extends Authenticatable
         'name',
         'phone',
         'email',
+        'address',
         'avatar',
+        'id_country',
         'password',
         'level'
     ];

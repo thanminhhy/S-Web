@@ -6,10 +6,13 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\Frontend\HomeController as FrontendHomeController;
 use App\Http\Controllers\Frontend\Auth\LoginController;
 use App\Http\Controllers\Frontend\Auth\RegisterController;
 use App\Http\Controllers\Frontend\Blog\BlogController as FrontendBlogController;
+use App\Http\Controllers\Frontend\Account\ProfileController;
+use App\Http\Controllers\Frontend\Account\MyProudctController;
 
 
 Route::get('/', function () {
@@ -49,6 +52,9 @@ Route::get('/frontend/index', [FrontendHomeController::class, 'index'])->name('f
 Route::get('/frontend/login', [LoginCOntroller::class, 'showLogin'])->name('frontend.login');
 Route::post('/frontend/login', [LoginController::class, 'login'])->name('frontend.login');
 
+//Logout
+Route::post('/frontend/logout', [LoginController::class, 'logout'])->name('frontend.logout');
+
 //Register
 Route::get('/frontend/register', [Registercontroller::class, 'showRegister'])->name('frontend.register');
 Route::post('/frontend/register', [RegisterController::class, 'register'])->name('frontend.register');
@@ -63,3 +69,31 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::post('/frontend/blog/comment/ajax', [FrontendBlogController::class, 'comment'])->name('blog.comment');
 });
+
+//Acount Management
+Route::middleware(['auth'])->group(function () {
+    Route::get('/frontend/myAccount', [ProfileController::class, 'showProfile'])->name('frontend.myAccount');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::post('/frontend/myAccount/{user}', [ProfileController::class, 'updateProfile'])->name('frontend.updateAccount');
+});
+
+//CRUD My Product
+Route::middleware(['auth'])->group(function () {
+    Route::get('/frontend/myAccount/myProduct', [MyProudctController::class, 'index'])->name('frontend.myProduct');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/frontend/myAccount/myProduct/CreateProduct', [MyProudctController::class, 'create'])->name('frontend.showCreateProductForm');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::post('/frontend/myAccount/myProduct/store', [MyProudctController::class, 'store'])->name('frontend.createProduct');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/frontend/myAccount/myProduct/EditProduct/{product}', [MyProudctController::class, 'Edit'])->name('frontend.showEditProductForm');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::post('/frontend/myAccount/myProduct/EditProduct/{product}', [MyProudctController::class, 'Update'])->name('frontend.updateProduct');
+});
+
+Route::get('/frontend/product/detail/{product}', [ProductController::class, 'showProductDetail'])->name('frontend.product.detail');

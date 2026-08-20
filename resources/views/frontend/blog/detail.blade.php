@@ -143,6 +143,20 @@
         {{$comments->onEachSide(0)->links('pagination::bootstrap-4')}}
     </div>
 </div><!--/Response-area-->
-
-
 @endsection
+
+@push('scripts')
+<!-- Truyền biến Laravel sang JavaScript biến toàn cục -->
+<script>
+    window.isLoggedIn = "{{Auth::check()}}";
+    window.routes = {
+        blogRate: "{{route('blog.rate')}}",
+        blogComment: "{{ route('blog.comment') }}",
+        login: "{{ route('frontend.login') }}"
+    };
+</script>
+
+<!-- Nhúng file JS xử lý chuyên biệt -->
+<script src="{{ asset('frontend/js/blog-detail.js') }}"></script>
+
+@endpush

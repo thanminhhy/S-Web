@@ -33,4 +33,15 @@ class LoginController extends Controller
             return redirect()->back()->withErrors("Email or password is not correct.");
         }
     }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect()->route('frontend.login')->with('success', 'Logout successfully!');
+    }
 }
