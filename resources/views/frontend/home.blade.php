@@ -15,16 +15,18 @@
                 <div class="product-image-wrapper">
                     <div class="single-products">
                         <div class="productinfo text-center">
-                            <img src="{{asset('upload/product/full/'.json_decode($product->images,true)[0])}}" alt="" />
+                            <img src="{{asset('upload/product/full/'.$product->images[0])}}" alt="" />
                             <h2>{{$product->price}} VND</h2>
                             <p>{{$product->name}}</p>
                             <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                         </div>
                         <div class="product-overlay">
                             <div class="overlay-content">
-                                <h2>{{$product->price}} VND</h2>
-                                <p>Easy {{$product->name}}</p>
-                                <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                <a href="{{route('frontend.product.detail',$product->id)}}">
+                                    <h2>{{$product->price}} VND</h2>
+                                    <p>{{$product->name}}</p>
+                                </a>
+                                <a class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                             </div>
                         </div>
                     </div>

@@ -2505,10 +2505,10 @@ textarea {
     flex-wrap: wrap;
 }
 .preview-box {
-    width: 200px;
+    width: 266px;
     overflow: hidden;
     position: relative;
-    height: 200px;
+    height: 381px;
     border: 1px solid #ddd;
     border-radius: 8px;
 }

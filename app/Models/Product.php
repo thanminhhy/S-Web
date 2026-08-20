@@ -20,6 +20,11 @@ class Product extends Model
         'user_id',
     ];
 
+    //Tự động cast cột 'images' sang kiểu array
+    protected $casts = [
+        'images' => 'array',
+    ];
+
     public function category()
     {
         return $this->belongsTo(Category::class);

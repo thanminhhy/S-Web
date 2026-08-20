@@ -96,8 +96,8 @@
             </div>
             <div class="row mb-3 align-items-center">
                 <div class="col-sm-10" id="old-images">
-                    @if(is_array(json_decode($product->images)))
-                    @foreach(json_decode($product->images) as $image)
+                    @if(is_array($product->images))
+                    @foreach($product->images as $image)
                     <div class="preview-update-box">
                         <img src="{{asset('upload/product/medium/'.$image)}}">
                         <div class='update-checkbox'>

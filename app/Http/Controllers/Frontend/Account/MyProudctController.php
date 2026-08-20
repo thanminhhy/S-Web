@@ -62,12 +62,13 @@ class MyProudctController extends Controller
                 $pathFull = $pathFullFolder . '/' . $cleanName;
 
                 $file->move($pathFullFolder, $cleanName);
-                Image::read($pathFull)->resize(120, 120)->save($pathMedium);
-                Image::read($pathFull)->resize(50, 70)->save($pathSmall);
+                Image::read($pathFull)->resize(256, 190)->save($pathMedium);
+                Image::read($pathFull)->resize(85, 85)->save($pathSmall);
 
                 $data['images'][] = $cleanName;
             }
-            $data['images'] = json_encode($data['images']);
+            $data['images'] = $data['images'];
+            // dd($data);
         }
 
         Product::create($data);
@@ -99,7 +100,7 @@ class MyProudctController extends Controller
     public function update(ProductRequest $request, Product $product)
     {
         //1. Lấy danh sách images từ db
-        $listImages = json_decode($product->images, true) ?? [];
+        $listImages = $product->images ?? [];
         $data = $request->validated();
 
         //2. Check xem có hình cần xóa khi udpate không để xử lí
@@ -141,14 +142,14 @@ class MyProudctController extends Controller
                 $pathFull = $pathFullFolder . '/' . $cleanName;
 
                 $file->move($pathFullFolder, $cleanName);
-                Image::read($pathFull)->resize(120, 120)->save($pathMedium);
-                Image::read($pathFull)->resize(50, 70)->save($pathSmall);
+                Image::read($pathFull)->resize(256, 190)->save($pathMedium);
+                Image::read($pathFull)->resize(85, 85)->save($pathSmall);
 
                 $listImages[] = $cleanName;
             }
         }
         // $data['images'] = $listImages;
-        $data['images'] = json_encode(array_values($listImages));
+        $data['images'] = array_values($listImages);
         $product->update($data);
         return redirect()->route('frontend.myProduct')->with('success', 'Update product successfully!');
     }
