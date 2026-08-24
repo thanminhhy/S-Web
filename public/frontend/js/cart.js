@@ -8,7 +8,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/frontend/product/addCart",
+            url: "/frontend/cart/addProduct",
             data: {
                 productId: productId,
                 quantity: 1,

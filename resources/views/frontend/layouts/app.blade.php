@@ -59,12 +59,18 @@
         <section>
             <div class="container">
                 <div class="row">
+                    @hasSection('sidebar')
                     <div class='col-sm-3'>
                         @yield('menu-left')
                     </div>
                     <div class="col-sm-9 padding-rignt">
                         @yield('content')
                     </div>
+                    @else
+                    <div class="col-md-12">
+                        @yield('content')
+                    </div>
+                    @endif
                 </div>
             </div>
         </section>

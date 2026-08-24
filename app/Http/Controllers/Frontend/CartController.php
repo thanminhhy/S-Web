@@ -52,4 +52,11 @@ class CartController extends Controller
             'totalQuantity' => $totalQuantity
         ]);
     }
+
+    public function showCart()
+    {
+        $cart = session()->get('cart', []);
+
+        return view('frontend.cart.index', compact('cart'));
+    }
 }

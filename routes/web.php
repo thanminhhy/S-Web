@@ -100,4 +100,5 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/frontend/product/detail/{product}', [ProductController::class, 'showProductDetail'])->name('frontend.product.detail');
 
 //Cart
-Route::post('/frontend/product/addCart', [CartController::class, 'addToCart'])->name('cart.add');
+Route::post('/frontend/cart/addProduct', [CartController::class, 'addToCart'])->name('cart.add');
+Route::get('/frontend/cart/index', [CartController::class, 'showCart'])->name('cart.index');
