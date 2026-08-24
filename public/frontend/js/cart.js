@@ -14,6 +14,7 @@ $(document).ready(function () {
                 quantity: 1,
             },
             success: function (data) {
+                $("#cart-count").text(data.totalQuantity);
                 alert(data.message);
             },
             error: function (xhr) {
