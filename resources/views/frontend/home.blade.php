@@ -26,7 +26,7 @@
                                     <h2>{{$product->price}} VND</h2>
                                     <p>{{$product->name}}</p>
                                 </a>
-                                <a class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                <a class="btn btn-default add-to-cart" data-id="{{$product->id}}"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                             </div>
                         </div>
                     </div>

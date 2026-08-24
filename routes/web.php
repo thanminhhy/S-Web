@@ -13,6 +13,7 @@ use App\Http\Controllers\Frontend\Auth\RegisterController;
 use App\Http\Controllers\Frontend\Blog\BlogController as FrontendBlogController;
 use App\Http\Controllers\Frontend\Account\ProfileController;
 use App\Http\Controllers\Frontend\Account\MyProudctController;
+use App\Http\Controllers\Frontend\CartController;
 
 
 Route::get('/', function () {
@@ -97,3 +98,6 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/frontend/product/detail/{product}', [ProductController::class, 'showProductDetail'])->name('frontend.product.detail');
+
+//Cart
+Route::post('/frontend/product/addCart', [CartController::class, 'addToCart'])->name('cart.add');
