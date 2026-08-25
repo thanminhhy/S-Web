@@ -33,6 +33,7 @@ class CartController extends Controller
             $cart[$productId]['quantity'] += $productQty;
         } else {
             $cart[$productId] = [
+                'id' => $productId,
                 'name' => $product->name,
                 'price' => $product->price,
                 'quantity' => $productQty,
@@ -57,6 +58,58 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
 
-        return view('frontend.cart.index', compact('cart'));
+        $cartSubTotal = 0;
+        foreach ($cart as $id => $item) {
+
+            $subTotal = $item['price'] * $item['quantity'];
+
+            $cart[$id]['subTotal'] = $subTotal;
+            $cartSubTotal += $subTotal;
+        }
+
+        return view('frontend.cart.index', compact('cart', 'cartSubTotal'));
+    }
+
+    public function updateCartQuantity(Request $request)
+    {
+        $request->validate([
+            'productId' => 'required|integer|exists:products,id',
+            'newQty' => 'required|integer|min:1'
+        ]);
+
+        $productId = $request->productId;
+        $newQty = $request->newQty;
+
+        //Get cart from session
+        $cart = session()->get('cart', []);
+
+        //check Cart exist or not
+        if (isset($cart[$productId])) {
+            //validate if $newQty is negative number or 0, the cart['quantity'] = 1
+            $cart[$productId]['quantity'] = max(1, $newQty);
+
+            session()->put('cart', $cart);
+            $cartSubTotal = 0;
+            $itemSubTotal = $cart[$productId]['quantity'] * $cart[$productId]['price'];
+            foreach ($cart as $id => $item) {
+                $subTotal = $item['price'] * $item['quantity'];
+
+                $cart[$id]['subTotal'] = $subTotal;
+                $cartSubTotal += $subTotal;
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Update cart successfully!',
+                'cart_count' => count($cart),
+                'itemSubTotal' => $itemSubTotal,
+                'cartSubTotal' => $cartSubTotal
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Sản phẩm không tồn tại trong giỏ hàng'
+        ], 404);
     }
 }

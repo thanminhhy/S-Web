@@ -59,7 +59,7 @@
         <section>
             <div class="container">
                 <div class="row">
-                    @hasSection('sidebar')
+                    @hasSection('menu-left')
                     <div class='col-sm-3'>
                         @yield('menu-left')
                     </div>

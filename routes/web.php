@@ -102,3 +102,4 @@ Route::get('/frontend/product/detail/{product}', [ProductController::class, 'sho
 //Cart
 Route::post('/frontend/cart/addProduct', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/frontend/cart/index', [CartController::class, 'showCart'])->name('cart.index');
+Route::post('frontend/cart/updateQuantity', [CartController::class, 'updateCartQuantity'])->name('cart.updateQty');

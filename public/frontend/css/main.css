@@ -1607,7 +1607,7 @@ h2.title {
     font-size: 18px;
 }
 
-#cart_items .cart_info .cart_total_price {
+#cart_items .cart_info .item_total_price {
     color: #fe980f;
     font-size: 24px;
 }

@@ -28,20 +28,20 @@
                         </td>
                         <td class="cart_description">
                             <h4><a href="">{{$product['name']}}</a></h4>
-                            <p>Web ID: </p>
+                            <p>Product ID: {{$product['id']}}</p>
                         </td>
                         <td class="cart_price">
                             <p>{{$product['price']}} VND</p>
                         </td>
                         <td class="cart_quantity">
                             <div class="cart_quantity_button">
-                                <a class="cart_quantity_up" href=""> + </a>
-                                <input class="cart_quantity_input" type="text" name="quantity" value="{{$product['quantity']}}" autocomplete="off" size="2">
-                                <a class="cart_quantity_down" href=""> - </a>
+                                <a class="cart_quantity_up" data-product-id="{{$product['id']}}"> + </a>
+                                <input class="cart_quantity_input" type="text" data-product-id="{{$product['id']}}" name="quantity" value="{{$product['quantity']}}" autocomplete="off" size="2">
+                                <a class="cart_quantity_down" data-product-id="{{$product['id']}}"> - </a>
                             </div>
                         </td>
-                        <td class="cart_total">
-                            <p class="cart_total_price">$59</p>
+                        <td class="item_total">
+                            <p class="item_total_price">{{$product['subTotal']}} VND</p>
                         </td>
                         <td class="cart_delete">
                             <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
@@ -118,10 +118,10 @@
             <div class="col-sm-6">
                 <div class="total_area">
                     <ul>
-                        <li>Cart Sub Total <span>$59</span></li>
+                        <li>Cart Sub Total <span id="cart_total_price">{{$cartSubTotal}} VND</span></li>
                         <li>Eco Tax <span>$2</span></li>
                         <li>Shipping Cost <span>Free</span></li>
-                        <li>Total <span>$61</span></li>
+                        <li>Total <span id="grand_total_cart">$61</span></li>
                     </ul>
                     <a class="btn btn-default update" href="">Update</a>
                     <a class="btn btn-default check_out" href="">Check Out</a>
