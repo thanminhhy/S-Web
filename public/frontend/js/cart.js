@@ -74,10 +74,15 @@ $(document).ready(function () {
                     .find(".item_total_price")
                     .text(`${data.itemSubTotal} VND`);
                 $("#cart_total_price").text(`${data.cartSubTotal} VND`);
+                $("#cart_eco_tax").text(`${data.ecoTax} VND`);
+                $("#cart_shipping_cost").text(`${data.shippingCost} VND`);
+                $("#grand_total_cart").text(`${data.grandTotal} VND`);
                 alert(data.message);
             },
             error: function (xhr) {
-                alert(xhr.message);
+                if (xhr.status === 422) {
+                    alert("Số lượng item phải có ít nhất 1 sản phẩm");
+                }
             },
         });
     }

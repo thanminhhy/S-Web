@@ -56,18 +56,11 @@ class CartController extends Controller
 
     public function showCart()
     {
+        // session()->forget('cart');
         $cart = session()->get('cart', []);
+        $data = $this->calcCartGrandTotal($cart);
 
-        $cartSubTotal = 0;
-        foreach ($cart as $id => $item) {
-
-            $subTotal = $item['price'] * $item['quantity'];
-
-            $cart[$id]['subTotal'] = $subTotal;
-            $cartSubTotal += $subTotal;
-        }
-
-        return view('frontend.cart.index', compact('cart', 'cartSubTotal'));
+        return view('frontend.cart.index', compact('cart', 'data'));
     }
 
     public function updateCartQuantity(Request $request)
@@ -89,21 +82,18 @@ class CartController extends Controller
             $cart[$productId]['quantity'] = max(1, $newQty);
 
             session()->put('cart', $cart);
-            $cartSubTotal = 0;
             $itemSubTotal = $cart[$productId]['quantity'] * $cart[$productId]['price'];
-            foreach ($cart as $id => $item) {
-                $subTotal = $item['price'] * $item['quantity'];
-
-                $cart[$id]['subTotal'] = $subTotal;
-                $cartSubTotal += $subTotal;
-            }
+            $data = $this->calcCartGrandTotal($cart);
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'Update cart successfully!',
                 'cart_count' => count($cart),
                 'itemSubTotal' => $itemSubTotal,
-                'cartSubTotal' => $cartSubTotal
+                'cartSubTotal' => $data['cartSubTotal'],
+                'shippingCost' => $data['shippingCost'],
+                'ecoTax' => $data['ecoTax'],
+                'grandTotal' => $data['grandTotal']
             ]);
         }
 
@@ -111,5 +101,32 @@ class CartController extends Controller
             'status' => 'error',
             'message' => 'Sản phẩm không tồn tại trong giỏ hàng'
         ], 404);
+    }
+
+    private function calcCartGrandTotal($cart)
+    {
+        $cartSubTotal = 0;
+        $totalEcoTax = 0;
+
+        foreach ($cart as $id => $item) {
+            $subTotal = $item['price'] * $item['quantity'];
+            $subEcoTax = (int)$item['quantity'] * 2000;
+            $cart[$id]['subTotal'] = $subTotal;
+
+            $totalEcoTax += $subEcoTax;
+            $cartSubTotal += $subTotal;
+        }
+
+        session()->put('cart', $cart);
+
+        $shippingCost = ($cartSubTotal >= 500000 || $cartSubTotal == 0) ? 0 : 30000;
+        $grandTotal = $totalEcoTax + $cartSubTotal + $shippingCost;
+        return
+            [
+                'cartSubTotal' => $cartSubTotal,
+                'shippingCost' => $shippingCost,
+                'ecoTax' => $totalEcoTax,
+                'grandTotal' => $grandTotal,
+            ];
     }
 }

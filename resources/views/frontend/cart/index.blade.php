@@ -118,10 +118,10 @@
             <div class="col-sm-6">
                 <div class="total_area">
                     <ul>
-                        <li>Cart Sub Total <span id="cart_total_price">{{$cartSubTotal}} VND</span></li>
-                        <li>Eco Tax <span>$2</span></li>
-                        <li>Shipping Cost <span>Free</span></li>
-                        <li>Total <span id="grand_total_cart">$61</span></li>
+                        <li>Cart Sub Total <span id="cart_total_price">{{$data['cartSubTotal']}} VND</span></li>
+                        <li>Eco Tax <span id='cart_eco_tax'>{{$data['ecoTax']}} VND</span></li>
+                        <li>Shipping Cost <span id='cart_shipping_cost'>{{$data['shippingCost']}}</span></li>
+                        <li>Total <span id="grand_total_cart">{{$data['grandTotal']}} VND</span></li>
                     </ul>
                     <a class="btn btn-default update" href="">Update</a>
                     <a class="btn btn-default check_out" href="">Check Out</a>
