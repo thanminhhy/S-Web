@@ -105,7 +105,7 @@ class CartController extends Controller
 
     public function showCheckoutForm()
     {
-        $cart = session()->get('cart', []);
+        $$cart = session()->get('cart', []);
         $data = $this->calcCartGrandTotal($cart);
 
         return view('frontend.cart.checkout', compact('cart', 'data'));

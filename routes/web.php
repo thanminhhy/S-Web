@@ -104,4 +104,6 @@ Route::post('/frontend/cart/addProduct', [CartController::class, 'addToCart'])->
 Route::get('/frontend/cart/index', [CartController::class, 'showCart'])->name('cart.index');
 Route::post('/frontend/cart/updateQuantity', [CartController::class, 'updateCartQuantity'])->name('cart.updateQty');
 
-Route::get('/frontend/cart/checkout', [Cartcontroller::class, 'showCheckoutForm'])->name('cart.checkout');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/frontend/cart/checkout', [Cartcontroller::class, 'showCheckoutForm'])->name('cart.checkout');
+});
