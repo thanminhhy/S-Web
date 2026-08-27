@@ -54,15 +54,6 @@ class CartController extends Controller
         ]);
     }
 
-    public function showCart()
-    {
-        // session()->forget('cart');
-        $cart = session()->get('cart', []);
-        $data = $this->calcCartGrandTotal($cart);
-
-        return view('frontend.cart.index', compact('cart', 'data'));
-    }
-
     public function updateCartQuantity(Request $request)
     {
         $request->validate([
@@ -101,6 +92,23 @@ class CartController extends Controller
             'status' => 'error',
             'message' => 'Sản phẩm không tồn tại trong giỏ hàng'
         ], 404);
+    }
+
+    public function showCart()
+    {
+        // session()->forget('cart');
+        $cart = session()->get('cart', []);
+        $data = $this->calcCartGrandTotal($cart);
+
+        return view('frontend.cart.index', compact('cart', 'data'));
+    }
+
+    public function showCheckoutForm()
+    {
+        $cart = session()->get('cart', []);
+        $data = $this->calcCartGrandTotal($cart);
+
+        return view('frontend.cart.checkout', compact('cart', 'data'));
     }
 
     private function calcCartGrandTotal($cart)
