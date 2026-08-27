@@ -10,11 +10,10 @@
             <thead>
                 <tr class="cart_menu">
                     <td class="image">Item</td>
-                    <td class="description"></td>
+                    <td class="description">Description </td>
                     <td class="price">Price</td>
                     <td class="quantity">Quantity</td>
                     <td class="total">Total</td>
-                    <td></td>
                 </tr>
             </thead>
             <tbody>
@@ -37,9 +36,6 @@
                     </td>
                     <td class="cart_total">
                         <p class="cart_total_price">{{$item['subTotal']}} VND</p>
-                    </td>
-                    <td class="cart_delete">
-                        <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
                     </td>
                 </tr>
                 @endforeach
