@@ -14,7 +14,7 @@ use App\Http\Controllers\Frontend\Blog\BlogController as FrontendBlogController;
 use App\Http\Controllers\Frontend\Account\ProfileController;
 use App\Http\Controllers\Frontend\Account\MyProudctController;
 use App\Http\Controllers\Frontend\CartController;
-
+use App\Http\Controllers\MailController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -107,3 +107,5 @@ Route::post('/frontend/cart/updateQuantity', [CartController::class, 'updateCart
 Route::middleware(['auth'])->group(function () {
     Route::get('/frontend/cart/checkout', [Cartcontroller::class, 'showCheckoutForm'])->name('cart.checkout');
 });
+
+Route::get('/test', [MailController::class, 'index']);
