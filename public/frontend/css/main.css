@@ -1754,7 +1754,8 @@ textarea {
 }
 
 .update,
-.check_out {
+.check_out,
+.order {
     background: #fe980f;
     border-radius: 0;
     color: #ffffff;

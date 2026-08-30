@@ -60,6 +60,7 @@
                                 <td><span>{{$data['grandTotal']}} VND</span></td>
                             </tr>
                         </table>
+                        <a class="btn btn-default order">Order</a>
                     </td>
                 </tr>
             </tbody>
