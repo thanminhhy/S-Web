@@ -124,7 +124,7 @@
                         <li>Total <span id="grand_total_cart">{{$data['grandTotal']}} VND</span></li>
                     </ul>
                     <a class="btn btn-default update" href="">Update</a>
-                    <a class="btn btn-default check_out" href="{{route('cart.checkout')}}">Check Out</a>
+                    <a class="btn btn-default check_out" href="{{route('frontend.cart.checkout')}}">Check Out</a>
                 </div>
             </div>
         </div>

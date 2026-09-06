@@ -105,7 +105,8 @@ Route::get('/frontend/cart/index', [CartController::class, 'showCart'])->name('c
 Route::post('/frontend/cart/updateQuantity', [CartController::class, 'updateCartQuantity'])->name('cart.updateQty');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/frontend/cart/checkout', [Cartcontroller::class, 'showCheckoutForm'])->name('cart.checkout');
+    Route::get('/frontend/cart/checkout', [Cartcontroller::class, 'showCheckoutForm'])->name('frontend.cart.checkout');
+    Route::post('/frontend/cart/checkout', [Cartcontroller::class, 'processCheckout'])->name('frontend.cart.checkout.process');
 });
 
-Route::get('/test', [MailController::class, 'index']);
+Route::get('/test', [CartController::class, 'previewMail']);

@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class MailNotify extends Mailable
+class MailNotify extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -19,11 +19,23 @@ class MailNotify extends Mailable
      * Create a new message instance.
      */
     private $data = [];
+    public $tries = 3;
+
+    public function backoff()
+    {
+        return [60, 300];
+    }
+
+    public function failed(\Throwable $exception)
+    {
+        // Ở đây để xử lý trường hợp mail resend 3 lần không được sẽ chuyển data từ bảng jobs qua fail_jobs
+        // Và ở đây sẽ xử lý để gửi thông báo cho dev hoặc admin
+    }
     //2. Get data from controller
     public function __construct($data)
     {
         //
-        $this->data = $data;
+        $this->data = $data->load(['items', 'user']);
     }
 
     // public function build()
@@ -52,7 +64,7 @@ class MailNotify extends Mailable
         return new Content(
             view: 'frontend.emails.index',
             with: [
-                'data' => $this->data,
+                'order' => $this->data,
             ]
         );
     }

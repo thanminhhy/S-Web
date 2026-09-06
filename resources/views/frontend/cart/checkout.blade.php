@@ -60,7 +60,10 @@
                                 <td><span>{{$data['grandTotal']}} VND</span></td>
                             </tr>
                         </table>
-                        <a class="btn btn-default order">Order</a>
+                        <button type="button"
+                            class="btn btn-default order"
+                            id="order-btn"
+                            data-url="{{route('frontend.cart.checkout.process')}}">Order</button>
                     </td>
                 </tr>
             </tbody>
