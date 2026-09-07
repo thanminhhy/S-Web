@@ -98,11 +98,11 @@ $(document).ready(function () {
                 btn.prop("disabled", true).text("Đang xử lý...");
             },
             success: function (response) {
-                alert(123);
                 alert(response.message);
                 window.location.href = response.redirect_url;
             },
             error: function (xhr) {
+                btn.prop("disabled", false).text("Order");
                 if (xhr.status === 400) {
                     alert(xhr.responseJSON.message);
                 } else {
