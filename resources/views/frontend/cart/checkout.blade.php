@@ -60,10 +60,15 @@
                                 <td><span>{{$data['grandTotal']}} VND</span></td>
                             </tr>
                         </table>
+                        @php
+                        $cart = session()->get('cart',[]);
+                        $isCartEmpty = empty($cart) || count($cart) === 0;
+                        @endphp
                         <button type="button"
-                            class="btn btn-default order"
+                            class="btn btn-default order "
                             id="order-btn"
-                            data-url="{{route('frontend.cart.checkout.process')}}">Order</button>
+                            data-url="{{route('frontend.cart.checkout.process')}}"
+                            {{$isCartEmpty ? 'disabled': ''}}>Order</button>
                     </td>
                 </tr>
             </tbody>

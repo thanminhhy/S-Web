@@ -1476,6 +1476,15 @@ h2.title {
     margin-top: 23px;
 }
 
+#order-btn:disabled,
+#order-btn.disabled {
+    display: inline-block !important; /* Buộc hiển thị lại nút */
+    opacity: 0.65 !important; /* Làm mờ nút chuẩn Bootstrap */
+    cursor: not-allowed !important; /* Hiện icon con trỏ cấm bấm */
+    pointer-events: auto !important; /* Giữ chuột để rê vào vẫn thấy icon not-allowed */
+    background: #fe980f !important;
+}
+
 .login-form form button,
 .signup-form form button {
     background: #fe980f;

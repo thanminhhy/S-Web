@@ -125,7 +125,7 @@ class CartController extends Controller
         //1. Check cart is empty or not
         if (empty($cart)) {
             return response()->json([
-                'success' => false,
+                'status' => 'error',
                 'message' => 'Giỏ hàng của bạn đang rỗng!'
             ], 400);
         }
@@ -177,6 +177,7 @@ class CartController extends Controller
 
         if ($mailSent) {
             $message = 'Đặt hàng thành công! Hệ thống đang xử lý gửi email xác nhận đơn hàng đến bạn.';
+            session()->forget('cart');
         } else {
             $message = 'Đặt hàng thành công! Tuy nhiên hệ thống không thể gửi email xác nhận lúc này.';
         }

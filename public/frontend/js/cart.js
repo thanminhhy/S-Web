@@ -88,15 +88,27 @@ $(document).ready(function () {
 
     //Process Order
     $("#order-btn").on("click", function (e) {
+        const btn = $(this);
         const orderUrl = $(this).data("url");
 
         $.ajax({
             type: "POST",
             url: orderUrl,
-            success: function (response) {
-                alert(response.message);
+            beforeSend: function () {
+                btn.prop("disabled", true).text("Đang xử lý...");
             },
-            error: function (xhr) {},
+            success: function (response) {
+                alert(123);
+                alert(response.message);
+                window.location.href = response.redirect_url;
+            },
+            error: function (xhr) {
+                if (xhr.status === 400) {
+                    alert(xhr.responseJSON.message);
+                } else {
+                    alert("Đã có lỗi hệ thống xảy ra, vui lòng thử lại sau!");
+                }
+            },
         });
     });
 });
