@@ -14,7 +14,7 @@ use App\Http\Controllers\Frontend\Blog\BlogController as FrontendBlogController;
 use App\Http\Controllers\Frontend\Account\ProfileController;
 use App\Http\Controllers\Frontend\Account\MyProudctController;
 use App\Http\Controllers\Frontend\CartController;
-
+use App\Http\Controllers\MailController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -102,4 +102,11 @@ Route::get('/frontend/product/detail/{product}', [ProductController::class, 'sho
 //Cart
 Route::post('/frontend/cart/addProduct', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/frontend/cart/index', [CartController::class, 'showCart'])->name('cart.index');
-Route::post('frontend/cart/updateQuantity', [CartController::class, 'updateCartQuantity'])->name('cart.updateQty');
+Route::post('/frontend/cart/updateQuantity', [CartController::class, 'updateCartQuantity'])->name('cart.updateQty');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/frontend/cart/checkout', [Cartcontroller::class, 'showCheckoutForm'])->name('frontend.cart.checkout');
+    Route::post('/frontend/cart/checkout', [Cartcontroller::class, 'processCheckout'])->name('frontend.cart.checkout.process');
+});
+
+Route::get('/test', [CartController::class, 'previewMail']);

@@ -1,5 +1,6 @@
 @extends('frontend.layouts.app')
 @section('content')
+@if(session('cart') && count(session('cart')) > 0)
 <section id="cart_items">
     <div class="container">
         <div class="breadcrumbs">
@@ -124,10 +125,19 @@
                         <li>Total <span id="grand_total_cart">{{$data['grandTotal']}} VND</span></li>
                     </ul>
                     <a class="btn btn-default update" href="">Update</a>
-                    <a class="btn btn-default check_out" href="">Check Out</a>
+                    <a class="btn btn-default check_out" href="{{route('frontend.cart.checkout')}}">Check Out</a>
                 </div>
             </div>
         </div>
     </div>
 </section><!--/#do_action-->
+@else
+<section id="empty_cart">
+    <div class="container text-center" style="padding: 50px 0;">
+        <h3>Giỏ hàng của bạn đang trống!</h3>
+        <p>Hãy chọn thêm sản phẩm để tiếp tục mua sắm.</p>
+        <a href="{{ route('frontend.index') }}" class="btn btn-primary">Quay về trang chủ</a>
+    </div>
+</section>
+@endif
 @endsection

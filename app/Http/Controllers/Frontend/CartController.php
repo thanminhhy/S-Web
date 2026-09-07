@@ -3,8 +3,15 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Mail\MailNotify;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use App\Models\Order;
+use App\Models\OrderItem;
+use Exception;
 
 class CartController extends Controller
 {
@@ -54,15 +61,6 @@ class CartController extends Controller
         ]);
     }
 
-    public function showCart()
-    {
-        // session()->forget('cart');
-        $cart = session()->get('cart', []);
-        $data = $this->calcCartGrandTotal($cart);
-
-        return view('frontend.cart.index', compact('cart', 'data'));
-    }
-
     public function updateCartQuantity(Request $request)
     {
         $request->validate([
@@ -103,7 +101,105 @@ class CartController extends Controller
         ], 404);
     }
 
-    private function calcCartGrandTotal($cart)
+    public function showCart()
+    {
+        // session()->forget('cart');
+        $cart = session()->get('cart', []);
+        $data = $this->calcCartGrandTotal($cart);
+
+        return view('frontend.cart.index', compact('cart', 'data'));
+    }
+
+    public function showCheckoutForm()
+    {
+        $cart = session()->get('cart', []);
+        $data = $this->calcCartGrandTotal($cart);
+
+        return view('frontend.cart.checkout', compact('cart', 'data'));
+    }
+
+    public function processCheckout()
+    {
+        $cart = session()->get('cart', []);
+
+        //1. Check cart is empty or not
+        if (empty($cart)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Giỏ hàng của bạn đang rỗng!'
+            ], 400);
+        }
+
+        $dataOrder = $this->calcCartGrandTotal($cart);
+        $user = Auth::user();
+
+        //2. Save Order to database by using try catch block
+        try {
+            //Create Order
+            $order = Order::Create([
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'address' => $user->address,
+                'total_price' => $dataOrder['grandTotal']
+            ]);
+
+            //Create list item in order
+            foreach ($cart as $item) {
+                OrderItem::Create([
+                    'order_id' => $order->id,
+                    'product_id' => $item['id'],
+                    'name' => $item['name'],
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price']
+                ]);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi khi tạo đơn hàng: ' . $e->getMessage()
+            ], 500);
+        }
+
+        //3. Send mail by using try catch block
+        $mailSent = true;
+        try {
+            Mail::to($order->email)->send(new MailNotify($order));
+        } catch (Exception $e) {
+            $mailSent = false;
+
+            //Save errors to log. Meanwhile, Devs will handle there
+            Log::error('Lỗi gửi mail đơn hàng #' . $order->id . ': ' . $e->getMessage());
+        }
+
+        //4. Delete cart in session
+        // session()->forget('cart');
+
+        if ($mailSent) {
+            $message = 'Đặt hàng thành công! Hệ thống đang xử lý gửi email xác nhận đơn hàng đến bạn.';
+            session()->forget('cart');
+        } else {
+            $message = 'Đặt hàng thành công! Tuy nhiên hệ thống không thể gửi email xác nhận lúc này.';
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $message,
+            'redirect_url' => route('frontend.index')
+        ]);
+    }
+
+    public function previewMail()
+    {
+        $order = Order::with(['items', 'user'])->find(12);
+
+        return view('frontend.emails.index', compact('order'));
+    }
+
+
+    //Use & in parameter to pass by reference. 
+    //Any changes inside this function will directly update the origional $cart outside
+    private function calcCartGrandTotal(&$cart)
     {
         $cartSubTotal = 0;
         $totalEcoTax = 0;

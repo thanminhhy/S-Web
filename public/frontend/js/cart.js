@@ -1,10 +1,9 @@
 $(document).ready(function () {
     //Add cart
-    $(".add-to-cart").click(function (e) {
+    $(".add-to-cart").on("click", function (e) {
         e.preventDefault();
 
         // const addToCartBtn = e.target;
-        const product = $(this).closest(".single-products");
         const productId = $(this).data("id");
 
         $.ajax({
@@ -27,7 +26,7 @@ $(document).ready(function () {
     });
 
     //Update cart quantity
-    $(".cart_quantity_up").click(function (e) {
+    $(".cart_quantity_up").on("click", function (e) {
         e.preventDefault();
 
         const item = $(this).closest("tr");
@@ -38,7 +37,7 @@ $(document).ready(function () {
         updateCartQuantity(productId, newQty, item);
     });
 
-    $(".cart_quantity_down").click(function (e) {
+    $(".cart_quantity_down").on("click", function (e) {
         e.preventDefault();
 
         const item = $(this).closest("tr");
@@ -49,7 +48,7 @@ $(document).ready(function () {
         updateCartQuantity(productId, newQty, item);
     });
 
-    $(".cart_quantity_input").change(function (e) {
+    $(".cart_quantity_input").on("change", function (e) {
         e.preventDefault();
 
         const item = $(this).closest("tr");
@@ -86,4 +85,30 @@ $(document).ready(function () {
             },
         });
     }
+
+    //Process Order
+    $("#order-btn").on("click", function (e) {
+        const btn = $(this);
+        const orderUrl = $(this).data("url");
+
+        $.ajax({
+            type: "POST",
+            url: orderUrl,
+            beforeSend: function () {
+                btn.prop("disabled", true).text("Đang xử lý...");
+            },
+            success: function (response) {
+                alert(response.message);
+                window.location.href = response.redirect_url;
+            },
+            error: function (xhr) {
+                btn.prop("disabled", false).text("Order");
+                if (xhr.status === 400) {
+                    alert(xhr.responseJSON.message);
+                } else {
+                    alert("Đã có lỗi hệ thống xảy ra, vui lòng thử lại sau!");
+                }
+            },
+        });
+    });
 });
