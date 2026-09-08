@@ -125,7 +125,14 @@
 					</div>
 					<div class="col-sm-3">
 						<div class="search_box pull-right">
-							<input type="text" id="search-input" placeholder="Search" />
+							<form action="{{route('search')}}" method="GET">
+								<input type="text"
+									autocomplete="off"
+									id="search-input"
+									placeholder="Search"
+									name="keyword" />
+							</form>
+							<div id="search-result-box" class="dropdown-search-results"></div>
 						</div>
 					</div>
 				</div>
