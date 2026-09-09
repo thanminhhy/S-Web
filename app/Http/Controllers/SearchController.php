@@ -10,6 +10,31 @@ class SearchController extends Controller
     //
     public function liveSearch(Request $request)
     {
+        $safeKeyword = $this->getSafeKeyword($request);
+
+        $products = Product::where('name', 'LIKE', "%{$safeKeyword}%")
+            ->select('id', 'name')
+            ->limit(5)
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'products' => $products
+        ]);
+    }
+
+    public function search(Request $request)
+    {
+        $safeKeyword = $this->getSafeKeyword($request);
+
+        $products = Product::where('name', 'LIKE', "%{$safeKeyword}%")
+            ->get();
+
+        return view('frontend.product.search', compact('products'));
+    }
+
+    private function getSafeKeyword(Request $request): ?string
+    {
         //1. Validate data
         $request->validate([
             'keyword' => 'nullable|string|max:100'
@@ -24,18 +49,6 @@ class SearchController extends Controller
         }
 
         //4. Thêm dấu \ trước các ký tự % và _ để thoát ký tự đặc biệt của LIKE(% và _)
-        $safeKeyword = addcslashes($keyword, '%_');
-
-        $products = Product::where('name', 'LIKE', "%{$safeKeyword}%")
-            ->select('id', 'name')
-            ->limit(5)
-            ->get();
-
-        return response()->json([
-            'status' => 'success',
-            'products' => $products
-        ]);
+        return addcslashes($keyword, '%_');
     }
-
-    public function search() {}
 }
