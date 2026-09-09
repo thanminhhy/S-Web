@@ -156,7 +156,7 @@ class CartController extends Controller
             }
         } catch (Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => 'error',
                 'message' => 'Lỗi khi tạo đơn hàng: ' . $e->getMessage()
             ], 500);
         }
@@ -183,7 +183,7 @@ class CartController extends Controller
         }
 
         return response()->json([
-            'success' => true,
+            'status' => 'success',
             'message' => $message,
             'redirect_url' => route('frontend.index')
         ]);

@@ -2549,3 +2549,86 @@ textarea {
     margin-bottom: 0px;
     transform: scale(0.85);
 }
+
+/* Khung chứa duy nhất cần có position relative để làm mốc định vị */
+.search_box {
+    position: relative;
+}
+
+#search-result-box {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #e1e1e1;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    z-index: 9999;
+    max-height: 280px;
+    overflow-y: auto;
+    display: none; /* Mặc định ẩn, JS sẽ gọi .show() khi có kết quả */
+}
+
+/* Tùy chỉnh danh sách gợi ý */
+#search-result-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#search-result-box ul li {
+    border-bottom: 1px solid #f2f2f2;
+}
+#search-result-box ul li:last-child {
+    border-bottom: none;
+}
+
+/* Các thẻ gợi ý sản phẩm */
+#search-result-box ul li a.suggest-item {
+    display: block;
+    padding: 10px 15px;
+    color: #363636;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Tự động thêm dấu ... nếu tên sản phẩm quá dài */
+}
+
+/* Effect khi rê chuột vào item gợi ý (Màu cam chủ đạo E-Shopper) */
+#search-result-box ul li a.suggest-item:hover {
+    background-color: #fe980f;
+    color: #ffffff;
+    padding-left: 20px; /* Hiệu ứng đẩy chữ sang phải nhẹ */
+}
+
+/* Khung hiển thị thông báo khi không tìm thấy kết quả */
+#search-result-box .no-result {
+    padding: 12px 15px;
+    color: #888888;
+    font-size: 13px;
+    font-style: italic;
+    text-align: center;
+}
+
+/* Tùy chỉnh thanh cuộn (Scrollbar) cho đẹp mắt */
+#search-result-box::-webkit-scrollbar {
+    width: 6px;
+}
+
+#search-result-box::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+#search-result-box::-webkit-scrollbar-thumb {
+    background: #cccccc;
+    border-radius: 3px;
+}
+
+#search-result-box::-webkit-scrollbar-thumb:hover {
+    background: #fe980f;
+}
