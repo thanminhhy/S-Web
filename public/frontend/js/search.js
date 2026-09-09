@@ -43,4 +43,16 @@ $(document).ready(function () {
             });
         }, 300);
     });
+
+    $(document).on("click", ".suggest-item", function () {
+        let selectedItem = $(this).text();
+        //1. Add suggest item to search input
+        $("#search-input").val(selectedItem);
+
+        //2. Hide dropdown list
+        $("#search-result-box").hide();
+
+        //3. Submit search input form
+        $("#search-input").closest("form").submit();
+    });
 });
