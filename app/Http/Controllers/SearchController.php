@@ -8,7 +8,7 @@ use App\Models\Product;
 class SearchController extends Controller
 {
     //
-    public function search(Request $request)
+    public function liveSearch(Request $request)
     {
         //1. Validate data
         $request->validate([
@@ -36,4 +36,6 @@ class SearchController extends Controller
             'products' => $products
         ]);
     }
+
+    public function search() {}
 }
