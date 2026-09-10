@@ -14,7 +14,12 @@ class SearchController extends Controller
     //
     public function liveSearch(Request $request)
     {
-        $safeKeyword = $this->getSafeKeyword($request);
+        //1. Validate data
+        $request->validate([
+            'keyword' => 'nullable|string|max:100'
+        ]);
+
+        $safeKeyword = $this->getSafeKeyword($request->keyword);
 
         $products = Product::where('name', 'LIKE', "%{$safeKeyword}%")
             ->select('id', 'name')
@@ -29,7 +34,13 @@ class SearchController extends Controller
 
     public function search(Request $request)
     {
-        $safeKeyword = $this->getSafeKeyword($request);
+        //1. Validate data
+        $request->validate([
+
+            'keyword' => 'nullable|string|max:100'
+        ]);
+
+        $safeKeyword = $this->getSafeKeyword($request->keyword);
 
         $products = Product::where('name', 'LIKE', "%{$safeKeyword}%")
             ->get();
@@ -50,19 +61,19 @@ class SearchController extends Controller
         ]);
     }
 
-    private function getSafeKeyword(Request $request): ?string
+    private function getSafeKeyword(?string $keyword): ?string
     {
-        //1. Validate data
-        $request->validate([
-            'keyword' => 'nullable|string|max:100'
-        ]);
+        //1. check null
+        if (is_null($keyword)) {
+            return null;
+        }
 
         //2. Làm sạch 2 đầu của chuỗi
-        $keyword = trim($request->keyword);
+        $keyword = trim($keyword);
 
         //3. Check whether the input is empty or not
-        if (empty($keyword)) {
-            return response()->json(['html' => '']);
+        if ($keyword === '') {
+            return null;
         }
 
         //4. Thêm dấu \ trước các ký tự % và _ để thoát ký tự đặc biệt của LIKE(% và _)
