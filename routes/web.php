@@ -115,6 +115,4 @@ Route::get('/test', [CartController::class, 'previewMail']);
 
 //Search
 Route::get('/api/live-search', [SearchController::class, 'liveSearch'])->name('liveSearch');
-Route::get('/api/search', [SearchController::class, 'search'])->name('search');
-
-Route::get('/api/advanced-search', [SearchController::class, 'advancedSearch'])->name('frontend.advancedSearch');
+Route::get('/api/search', [SearchController::class, 'advancedSearch'])->name('frontend.search');

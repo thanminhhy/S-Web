@@ -125,7 +125,7 @@
 					</div>
 					<div class="col-sm-3">
 						<div class="search_box pull-right">
-							<form action="{{route('search')}}" method="GET">
+							<form action="{{route('frontend.search')}}" method="GET">
 								<input type="text"
 									autocomplete="off"
 									id="search-input"
