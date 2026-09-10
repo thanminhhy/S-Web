@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Category;
+use App\Models\Brand;
+
+
 
 class SearchController extends Controller
 {
@@ -30,7 +34,10 @@ class SearchController extends Controller
         $products = Product::where('name', 'LIKE', "%{$safeKeyword}%")
             ->get();
 
-        return view('frontend.product.search', compact('products'));
+        $categories = Category::get();
+        $brands = Brand::get();
+
+        return view('frontend.product.search', compact('products', 'categories', 'brands'));
     }
 
     private function getSafeKeyword(Request $request): ?string

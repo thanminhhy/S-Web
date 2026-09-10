@@ -2632,3 +2632,67 @@ textarea {
 #search-result-box::-webkit-scrollbar-thumb:hover {
     background: #fe980f;
 }
+
+.product-filter-wrapper {
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Hàng chứa các ô input/select dạng Flexbox */
+.filter-inputs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; /* Khoảng cách nhỏ giữa các ô như thiết kế */
+}
+
+/* Định dạng từng ô nhập liệu */
+.filter-group {
+    flex: 1 1 calc(20% - 8px); /* Chia đều 5 cột trên 1 hàng */
+    min-width: 140px; /* Độ rộng tối thiểu trên màn hình nhỏ */
+}
+
+.filter-control {
+    width: 100%;
+    height: 38px;
+    padding: 6px 12px;
+    background-color: #f0f0e9; /* Màu nền xám nhạt đặc trưng E-Shopper */
+    border: none;
+    border-radius: 0;
+    color: #696763;
+    font-size: 14px;
+    font-weight: 300;
+    outline: none;
+    transition: all 0.2s ease;
+}
+.filter-control:focus {
+    background-color: #e6e6df;
+}
+
+.btn-search {
+    background-color: #fe980f; /* Màu cam chủ đạo E-Shopper */
+    color: #ffffff;
+    border: none;
+    padding: 8px 30px;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-search:hover {
+    background-color: #d87e00;
+}
+
+/* Responsive cho màn hình điện thoại (Mobile) */
+@media (max-width: 768px) {
+    .filter-group {
+        flex: 1 1 100%; /* Trên di động dồn thành 1 cột */
+    }
+}
