@@ -5,7 +5,10 @@
 
 @section('content')
 <div class="product-filter-wrapper">
-    <form class="filter-form">
+    <form id="filter-form"
+        class="filter-form"
+        action="{{route('frontend.advancedSearch')}}"
+        method="GET">
         <div class="filter-inputs">
             <!-- 1. Input name -->
             <div class="filter-group">

@@ -55,4 +55,17 @@ $(document).ready(function () {
         //3. Submit search input form
         $("#search-input").closest("form").submit();
     });
+
+    $("#filter-form").on("submit", function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: $(this).attr("action"),
+            type: $(this).attr("method") || "GET",
+            data: $(this).serialize(),
+            success: function (response) {
+                alert(response.message);
+            },
+        });
+    });
 });

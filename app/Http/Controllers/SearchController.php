@@ -40,6 +40,16 @@ class SearchController extends Controller
         return view('frontend.product.search', compact('products', 'categories', 'brands'));
     }
 
+    public function advancedSearch(Request $request)
+    {
+        $products = Product::query();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'filter successfully!'
+        ]);
+    }
+
     private function getSafeKeyword(Request $request): ?string
     {
         //1. Validate data
