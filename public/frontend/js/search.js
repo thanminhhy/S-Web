@@ -1,5 +1,6 @@
 $(document).ready(function () {
     let timer;
+    //Handle when typing on search input
     $("#search-input").on("keyup", function () {
         let keyword = $(this).val();
 
@@ -44,6 +45,7 @@ $(document).ready(function () {
         }, 300);
     });
 
+    // Handle to search specified item in search suggestions
     $(document).on("click", ".suggest-item", function () {
         let selectedItem = $(this).text();
         //1. Add suggest item to search input
@@ -56,11 +58,12 @@ $(document).ready(function () {
         $("#search-input").closest("form").submit();
     });
 
-    function fetchProducts(url, data = null) {
+    //Function to send request without load page with ajax for filter search and pagination
+    function fetchProducts(baseUrl, queryString = null) {
         $.ajax({
-            url: url,
+            url: baseUrl,
             type: "GET",
-            data: data,
+            data: queryString,
             beforeSend: function () {
                 $("#ajax-product-list").css("opacity", "0.5");
             },
@@ -71,17 +74,37 @@ $(document).ready(function () {
                         .css("opacity", "1");
 
                     // Cập nhật thanh URL trình duyệt
-                    let fullUrl = data ? url + "?" + data : url;
+                    let fullUrl = queryString
+                        ? baseUrl + "?" + queryString
+                        : baseUrl;
                     window.history.pushState({}, "", fullUrl);
                 }
             },
         });
     }
+
+    function getCleanQueryString(form) {
+        //Dùng để chuyển form jquery sang DOM element khi cần
+        // Ví dụ trường hợp truyền vào một $('#filter-form') sẽ bị lỗi nếu không đóng gói form trong jquery
+        let formElement = $(form)[0];
+        let params = new URLSearchParams(new FormData(formElement));
+
+        //Loop over URLSearchParams and delete key that has empty values
+        for (let [key, value] of Array.from(params.entries())) {
+            if (!value.trim()) {
+                params.delete(key);
+            }
+        }
+
+        return params.toString();
+    }
     $("#filter-form").on("submit", function (e) {
         e.preventDefault();
         const url = $(this).attr("action");
-        const data = $(this).serialize();
-        fetchProducts(url, data);
+        const cleanData = getCleanQueryString(this);
+
+        fetchProducts(url, cleanData);
+
         // $.ajax({
         //     url: $(this).attr("action"),
         //     type: $(this).attr("method") || "GET",
@@ -105,6 +128,10 @@ $(document).ready(function () {
 
         if (!pageUrl) return;
 
-        fetchProducts(pageUrl);
+        const urlParts = pageUrl.split("?");
+        const baseUrl = urlParts[0];
+        const queryString = urlParts[1];
+
+        fetchProducts(baseUrl, queryString);
     });
 });

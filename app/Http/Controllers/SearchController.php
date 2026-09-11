@@ -32,26 +32,26 @@ class SearchController extends Controller
         ]);
     }
 
+    // public function search(Request $request)
+    // {
+    //     //1. Validate data
+    //     $request->validate([
+
+    //         'keyword' => 'nullable|string|max:100'
+    //     ]);
+
+    //     $safeKeyword = $this->getSafeKeyword($request->keyword);
+
+    //     $products = Product::where('name', 'LIKE', "%{$safeKeyword}%")
+    //         ->paginate(3);
+
+    //     $categories = Category::get();
+    //     $brands = Brand::get();
+
+    //     return view('frontend.product.search', compact('products', 'categories', 'brands'));
+    // }
+
     public function search(Request $request)
-    {
-        //1. Validate data
-        $request->validate([
-
-            'keyword' => 'nullable|string|max:100'
-        ]);
-
-        $safeKeyword = $this->getSafeKeyword($request->keyword);
-
-        $products = Product::where('name', 'LIKE', "%{$safeKeyword}%")
-            ->paginate(3);
-
-        $categories = Category::get();
-        $brands = Brand::get();
-
-        return view('frontend.product.search', compact('products', 'categories', 'brands'));
-    }
-
-    public function advancedSearch(Request $request)
     {
         // Validate input
         $request->validate([
@@ -94,6 +94,7 @@ class SearchController extends Controller
             $query->orderBy('price', $sort);
         }
 
+        //Paginate and keep the lastest URL
         $products = $query->paginate(3)->withQueryString();
 
         if ($request->ajax()) {
