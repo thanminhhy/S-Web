@@ -83,12 +83,28 @@ $(document).ready(function () {
         });
     }
 
+    //To remove redundant filter field when we search filterly
     function getCleanQueryString(form) {
         //Dùng để chuyển form jquery sang DOM element khi cần
         // Ví dụ trường hợp truyền vào một $('#filter-form') sẽ bị lỗi nếu không đóng gói form trong jquery
         let formElement = $(form)[0];
         let params = new URLSearchParams(new FormData(formElement));
 
+        //check keyword in filter form exist or not. If not run block to get the keyword from current URL
+        if (!params.has("keyword")) {
+            const currentUrlParams = new URLSearchParams(
+                window.location.search,
+            );
+
+            const oldKeyword = currentUrlParams.get("keyword");
+
+            //check whether oldKeyword exists or not and
+            // ensure there's no empty string with space inside oldKeyword
+            //ex: oldKeyword=" ". Trim will remove space.
+            if (oldKeyword && oldKeyword.trim()) {
+                params.set("keyword", oldKeyword.trim());
+            }
+        }
         //Loop over URLSearchParams and delete key that has empty values
         for (let [key, value] of Array.from(params.entries())) {
             if (!value.trim()) {
