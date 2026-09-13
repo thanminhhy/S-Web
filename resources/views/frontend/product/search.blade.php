@@ -63,6 +63,10 @@
                 </select>
             </div>
         </div>
+        <!-- 5. Hidden input for price slider on menu-left side bar -->
+        <input type="hidden" name="price_min" id="hidden_price_min">
+        <input type="hidden" name="price_max" id="hidden_price_max">
+
         <!-- submit button -->
         <div class="filter-actions">
             <button type="submit" class="btn-search">Search</button>

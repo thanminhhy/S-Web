@@ -94,9 +94,20 @@ class SearchController extends Controller
             $query->orderBy('price', $sort);
         }
 
+        // if ($request->filled('price_min') && $request->filled('price_max')) {
+        // }
+
+        $query->when($request->filled('price_min') && $request->filled('price_max'), function ($q) use ($request) {
+            $q->whereBetween('price', [
+                $request->input('price_min'),
+                $request->input('price_max')
+            ]);
+        });
+
+
         //Paginate and keep the lastest URL
         $products = $query->paginate(3)->withQueryString();
-
+        $maxPrice = Product::max('price') ?? 2000000;
         if ($request->ajax()) {
             return response()->json([
                 'status' => 'success',
@@ -104,7 +115,7 @@ class SearchController extends Controller
                 'html' => view('frontend.product.layout.product-list', compact('products'))->render()
             ]);
         }
-        return view('frontend.product.search', compact('products', 'categories', 'brands'));
+        return view('frontend.product.search', compact('products', 'categories', 'brands', 'maxPrice'));
     }
 
     private function getSafeKeyword(?string $keyword): ?string

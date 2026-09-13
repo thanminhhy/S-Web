@@ -45,6 +45,43 @@ $(document).ready(function () {
         }, 300);
     });
 
+    $("#filter-form").on("submit", function (e) {
+        e.preventDefault();
+        const url = $(this).attr("action");
+        const cleanData = getCleanQueryString(this);
+
+        fetchProducts(url, cleanData);
+
+        // $.ajax({
+        //     url: $(this).attr("action"),
+        //     type: $(this).attr("method") || "GET",
+        //     data: $(this).serialize(),
+        //     success: function (response) {
+        //         $("#ajax-product-list").html(response.html);
+
+        //         window.history.pushState(
+        //             {},
+        //             "",
+        //             "?" + $("#filter-form").serialize(),
+        //         );
+        //     },
+        // });
+    });
+
+    $(document).on("click", "#ajax-product-list .pagination a", function (e) {
+        e.preventDefault();
+
+        let pageUrl = $(this).attr("href");
+
+        if (!pageUrl) return;
+
+        const urlParts = pageUrl.split("?");
+        const baseUrl = urlParts[0];
+        const queryString = urlParts[1];
+
+        fetchProducts(baseUrl, queryString);
+    });
+
     // Handle to search specified item in search suggestions
     $(document).on("click", ".suggest-item", function () {
         let selectedItem = $(this).text();
@@ -57,6 +94,25 @@ $(document).ready(function () {
         //3. Submit search input form
         $("#search-input").closest("form").submit();
     });
+
+    $("#sl2").on("slideStop", function (e) {
+        //1. Extract values from slider
+        const priceRange = $(this).val().split(",");
+        const minPrice = priceRange[0];
+        const maxPrice = priceRange[1];
+
+        //2.Sync to hidden inputs inside #filter-form
+        $("#hidden_price_min").val(minPrice);
+        $("#hidden_price_max").val(maxPrice);
+
+        //3. Trigger #filter-form again
+        const baseUrl = $("#filter-form").attr("action");
+        const queryString = getCleanQueryString("#filter-form");
+
+        fetchProducts(baseUrl, queryString);
+    });
+
+    //==============================Helper function================================
 
     //Function to send request without load page with ajax for filter search and pagination
     function fetchProducts(baseUrl, queryString = null) {
@@ -114,40 +170,4 @@ $(document).ready(function () {
 
         return params.toString();
     }
-    $("#filter-form").on("submit", function (e) {
-        e.preventDefault();
-        const url = $(this).attr("action");
-        const cleanData = getCleanQueryString(this);
-
-        fetchProducts(url, cleanData);
-
-        // $.ajax({
-        //     url: $(this).attr("action"),
-        //     type: $(this).attr("method") || "GET",
-        //     data: $(this).serialize(),
-        //     success: function (response) {
-        //         $("#ajax-product-list").html(response.html);
-
-        //         window.history.pushState(
-        //             {},
-        //             "",
-        //             "?" + $("#filter-form").serialize(),
-        //         );
-        //     },
-        // });
-    });
-
-    $(document).on("click", "#ajax-product-list .pagination a", function (e) {
-        e.preventDefault();
-
-        let pageUrl = $(this).attr("href");
-
-        if (!pageUrl) return;
-
-        const urlParts = pageUrl.split("?");
-        const baseUrl = urlParts[0];
-        const queryString = urlParts[1];
-
-        fetchProducts(baseUrl, queryString);
-    });
 });
