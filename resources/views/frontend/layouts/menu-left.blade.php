@@ -165,11 +165,11 @@
                 class="span2"
                 value=""
                 data-slider-min="0"
-                data-slider-max="600"
-                data-slider-step="5"
-                data-slider-value="[250,450]"
+                data-slider-max="{{$maxPrice}}"
+                data-slider-step="10000"
+                data-slider-value="[10000,{{request('price_max', $maxPrice)}}]"
                 id="sl2" /><br />
-            <b class="pull-left">$ 0</b> <b class="pull-right">$ 600</b>
+            <b class="pull-left">0 VND</b> <b class="pull-right">{{$maxPrice}} VND</b>
         </div>
     </div>
     <!--/price-range-->

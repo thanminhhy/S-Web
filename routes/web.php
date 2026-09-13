@@ -15,6 +15,7 @@ use App\Http\Controllers\Frontend\Account\ProfileController;
 use App\Http\Controllers\Frontend\Account\MyProudctController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\SearchController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -110,3 +111,8 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/test', [CartController::class, 'previewMail']);
+
+
+//Search
+Route::get('/api/live-search', [SearchController::class, 'liveSearch'])->name('liveSearch');
+Route::get('/api/search', [SearchController::class, 'search'])->name('frontend.search');
