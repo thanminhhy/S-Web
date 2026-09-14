@@ -18,12 +18,13 @@ class Admin
     {
         if (Auth::check() && Auth::user()->level == 1) {
             return $next($request);
-        } else {
+        }
+
+        if (Auth::check()) {
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
-
-            return redirect('/login')->with('error', 'You do not have access to this area');
         }
+        return redirect('/login')->with('error', 'You do not have access to this area');
     }
 }
