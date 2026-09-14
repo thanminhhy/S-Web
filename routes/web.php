@@ -26,26 +26,31 @@ Auth::routes();
 
 //============Admin===========
 
-//Dashboard
-Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+Route::group([
+    'middleware' => ['admin']
+], function () {
+    //Dashboard
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
-//Profile
-Route::get('/admin/profile', [UserController::class, 'index'])->name('admin.profile');
-Route::post('/admin/update/{id}', [UserController::class, 'update']);
+    //Profile
+    Route::get('/admin/profile', [UserController::class, 'index'])->name('admin.profile');
+    Route::post('/admin/update/{id}', [UserController::class, 'update']);
 
-//Country
-Route::get('/admin/country', [CountryController::class, 'index'])->name('admin.country');
-Route::post('/admin/country/store', [CountryController::class, 'store'])->name('admin.country.store');
-Route::post('/admin/country/update/{id}', [CountryController::class, 'update'])->name('admin.country.update');
-Route::delete('/admin/country/delete/{id}', [CountryController::class, 'destroy'])->name('admin.country.delete');
+    //Country
+    Route::get('/admin/country', [CountryController::class, 'index'])->name('admin.country');
+    Route::post('/admin/country/store', [CountryController::class, 'store'])->name('admin.country.store');
+    Route::post('/admin/country/update/{id}', [CountryController::class, 'update'])->name('admin.country.update');
+    Route::delete('/admin/country/delete/{id}', [CountryController::class, 'destroy'])->name('admin.country.delete');
 
-//Blog
-Route::get('/admin/blog/index', [BlogController::class, 'index'])->name('admin.blog.index');
-Route::get('/admin/blog/create', [BlogController::class, 'create'])->name('admin.blog.create');
-Route::post('/admin/blog/store', [BlogController::class, 'store'])->name('admin.blog.store');
-Route::get('/admin/blog/edit/{blog}', [BlogController::class, 'edit'])->name('admin.blog.edit');
-Route::post('/admin/blog/update/{blog}', [BlogController::class, 'update'])->name('admin.blog.update');
-Route::delete('/admin/blog/delete/{blog}', [BlogController::class, 'destroy'])->name('admin.blog.delete');
+    //Blog
+    Route::get('/admin/blog/index', [BlogController::class, 'index'])->name('admin.blog.index');
+    Route::get('/admin/blog/create', [BlogController::class, 'create'])->name('admin.blog.create');
+    Route::post('/admin/blog/store', [BlogController::class, 'store'])->name('admin.blog.store');
+    Route::get('/admin/blog/edit/{blog}', [BlogController::class, 'edit'])->name('admin.blog.edit');
+    Route::post('/admin/blog/update/{blog}', [BlogController::class, 'update'])->name('admin.blog.update');
+    Route::delete('/admin/blog/delete/{blog}', [BlogController::class, 'destroy'])->name('admin.blog.delete');
+});
+
 
 //=========Frontend=========
 Route::get('/frontend/index', [FrontendHomeController::class, 'index'])->name('frontend.index');
