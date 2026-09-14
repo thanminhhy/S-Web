@@ -18,7 +18,6 @@ class LoginController extends Controller
         $login = [
             'email' => $request->email,
             'password' => $request->password,
-            'level' => 0
         ];
 
         $remember = false;
@@ -28,6 +27,16 @@ class LoginController extends Controller
         }
 
         if (Auth::attempt($login, $remember)) {
+            if ((int) Auth::user()->level !== 0) {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return redirect()->back()->withErrors(
+                    "Admin account is not allowed to access here. Please access admin area"
+                );
+            }
+
             return redirect()->intended(route('frontend.index'));
         } else {
             return redirect()->back()->withErrors("Email or password is not correct.");
