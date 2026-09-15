@@ -25,30 +25,26 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/home', [HomeController::class, 'index']);
+//Forget password
+Route::get('pasword/reset', [AdminForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('password/email', [AdminForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+//Reset password
+Route::get('password/reset/{token}', [AdminResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [AdminResetPasswordController::class, 'reset'])->name('password.update');
 
 
+
+
+
+//============Admin===========
 //Modify Auth created by laravel for admin
 Route::prefix('admin')->name('admin.')->group(function () {
     //log in - log out
     Route::get('login', [AdminLoginController::class, 'showLoginForm'])->name('login');
     Route::post('login', [AdminLoginController::class, 'login'])->name('login');
     Route::post('logout', [AdminLoginController::class, 'logout'])->name('logout');
-
-    //Forget password
-    Route::get('pasword/reset', [AdminForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-    Route::post('password/email', [AdminForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-
-    //Reset password
-    Route::post('password/reset', [AdminResetPasswordController::class, 'reset'])->name('password.update');
 });
-
-Route::prefix('admin')->group(function () {
-    //Reset password
-    Route::get('password/reset/{token}', [AdminResetPasswordController::class, 'showResetForm'])->name('password.reset');
-});
-
-//============Admin===========
-
 Route::middleware(['admin'])->group(function () {
     //Dashboard
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
@@ -73,16 +69,14 @@ Route::middleware(['admin'])->group(function () {
 });
 
 
-//=========Frontend=========
+//=========Frontend(User)=========
 Route::get('/frontend/index', [FrontendHomeController::class, 'index'])->name('frontend.index');
 
 //login
 Route::get('/frontend/login', [LoginController::class, 'showLogin'])->name('frontend.login');
 Route::post('/frontend/login', [LoginController::class, 'login'])->name('frontend.login');
-
 //Logout
 Route::post('/frontend/logout', [LoginController::class, 'logout'])->name('frontend.logout');
-
 //Register
 Route::get('/frontend/register', [Registercontroller::class, 'showRegister'])->name('frontend.register');
 Route::post('/frontend/register', [RegisterController::class, 'register'])->name('frontend.register');
