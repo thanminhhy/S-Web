@@ -21,11 +21,12 @@ class Member
         }
 
         if (Auth::check()) {
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
+            // Auth::logout();
+            // $request->session()->invalidate();
+            // $request->session()->regenerateToken();
+            abort(403, 'You do not have access to this page.');
         }
 
-        return redirect(route('frontend.login'))->with('error', 'You do not have access to this area');
+        return redirect(route('frontend.login'))->with('error', 'Please log in before taking this action!');
     }
 }

@@ -21,10 +21,11 @@ class Admin
         }
 
         if (Auth::check()) {
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
+            abort(403, 'You do not have access to this page.');
+            // Auth::logout();
+            // $request->session()->invalidate();
+            // $request->session()->regenerateToken();
         }
-        return redirect(route('admin.login'))->with('error', 'You do not have access to this area');
+        return redirect(route('admin.login'))->with('error', 'Please log in before taking this action!');
     }
 }

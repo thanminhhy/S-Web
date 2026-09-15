@@ -77,7 +77,7 @@ Route::middleware(['admin'])->group(function () {
 Route::get('/frontend/index', [FrontendHomeController::class, 'index'])->name('frontend.index');
 
 //login
-Route::get('/frontend/login', [LoginCOntroller::class, 'showLogin'])->name('frontend.login');
+Route::get('/frontend/login', [LoginController::class, 'showLogin'])->name('frontend.login');
 Route::post('/frontend/login', [LoginController::class, 'login'])->name('frontend.login');
 
 //Logout
@@ -114,11 +114,11 @@ Route::middleware(['member'])->group(function () {
 Route::get('/frontend/product/detail/{product}', [ProductController::class, 'showProductDetail'])->name('frontend.product.detail');
 
 //Cart
-Route::post('/frontend/cart/addProduct', [CartController::class, 'addToCart'])->name('cart.add');
-Route::get('/frontend/cart/index', [CartController::class, 'showCart'])->name('cart.index');
-Route::post('/frontend/cart/updateQuantity', [CartController::class, 'updateCartQuantity'])->name('cart.updateQty');
-
 Route::middleware(['member'])->group(function () {
+    Route::post('/frontend/cart/addProduct', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::get('/frontend/cart/index', [CartController::class, 'showCart'])->name('cart.index');
+    Route::post('/frontend/cart/updateQuantity', [CartController::class, 'updateCartQuantity'])->name('cart.updateQty');
+
     Route::get('/frontend/cart/checkout', [Cartcontroller::class, 'showCheckoutForm'])->name('frontend.cart.checkout');
     Route::post('/frontend/cart/checkout', [Cartcontroller::class, 'processCheckout'])->name('frontend.cart.checkout.process');
 });

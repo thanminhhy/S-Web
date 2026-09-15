@@ -33,7 +33,7 @@ class LoginController extends Controller
                 $request->session()->regenerateToken();
 
                 return redirect()->back()->withErrors(
-                    "Admin account is not allowed to access here. Please access admin area"
+                    "Email or password is not correct."
                 );
             }
 
