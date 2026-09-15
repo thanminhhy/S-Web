@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class ResetPasswordController extends Controller
 {
@@ -26,4 +30,17 @@ class ResetPasswordController extends Controller
      * @var string
      */
     protected $redirectTo = '/admin/login';
+
+    //Override on resetPassword method inside trait ResetsPasswords
+    // Override orders: Class(controllers where reuse trait) > trait > Parent class
+    protected function resetPassword($user, $password)
+    {
+        $this->setUserPassword($user, $password);
+        $user->setRememberToken(Str::random(60));
+
+        $user->save();
+
+        event(new PasswordReset($user));
+        Auth::guard()->logout();
+    }
 }

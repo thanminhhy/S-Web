@@ -7,6 +7,11 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 @endif
+@if (session('status'))
+<script>
+    alert("{{ session('status') }}");
+</script>
+@endif
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
