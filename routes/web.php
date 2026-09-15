@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\Auth\LoginController as AdminLoginController;
+use App\Http\Controllers\Admin\Auth\ForgotPasswordController as AdminForgotPasswordController;
+use App\Http\Controllers\Admin\Auth\ResetPasswordController as AdminResetPasswordController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CountryController;
@@ -16,13 +19,33 @@ use App\Http\Controllers\Frontend\Account\MyProudctController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\SearchController;
+use App\Http\Middleware\Admin;
 
 Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/home', [HomeController::class, 'index']);
 
-Auth::routes();
+
+//Modify Auth created by laravel for admin
+Route::prefix('admin')->name('admin.')->group(function () {
+    //log in - log out
+    Route::get('login', [AdminLoginController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [AdminLoginController::class, 'login'])->name('login');
+    Route::post('logout', [AdminLoginController::class, 'logout'])->name('logout');
+
+    //Forget password
+    Route::get('pasword/reset', [AdminForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('password/email', [AdminForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+    //Reset password
+    Route::post('password/reset', [AdminResetPasswordController::class, 'reset'])->name('password.update');
+});
+
+Route::prefix('admin')->group(function () {
+    //Reset password
+    Route::get('password/reset/{token}', [AdminResetPasswordController::class, 'showResetForm'])->name('password.reset');
+});
 
 //============Admin===========
 

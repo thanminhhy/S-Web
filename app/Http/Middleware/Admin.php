@@ -25,6 +25,6 @@ class Admin
             $request->session()->invalidate();
             $request->session()->regenerateToken();
         }
-        return redirect('/login')->with('error', 'You do not have access to this area');
+        return redirect(route('admin.login'))->with('error', 'You do not have access to this area');
     }
 }

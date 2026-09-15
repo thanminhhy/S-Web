@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
@@ -25,5 +25,5 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin/dashboard';
+    protected $redirectTo = '/admin/login';
 }

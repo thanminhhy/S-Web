@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -47,9 +47,9 @@ class LoginController extends Controller
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            return redirect('/login')->with('error', 'Access denied. Admin credentials required.');
+            return redirect(route('admin.login'))->with('error', 'Access denied. Admin credentials required.');
         }
 
-        return redirect('admin/dashboard');
+        return redirect(route('admin.dashboard'));
     }
 }
