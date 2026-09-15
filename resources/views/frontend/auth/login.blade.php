@@ -1,5 +1,10 @@
 @extends('frontend.auth.layout.app')
 @section('content')
+@if (session('status'))
+<script>
+    alert("{{ session('status') }}");
+</script>
+@endif
 <section id="form"><!--form-->
     <div class="container">
         <div class="row">
@@ -46,6 +51,11 @@
                         <button type="submit" class="btn btn-default">Login</button>
                     </form>
                     <a href="{{route('frontend.register')}}">Register?</a>
+                    @if (Route::has('password.request'))
+                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                        {{ __('Forgot Your Password?') }}
+                    </a>
+                    @endif
                 </div><!--/login form-->
             </div>
         </div>

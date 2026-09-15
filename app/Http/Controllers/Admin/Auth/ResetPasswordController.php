@@ -29,7 +29,7 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin/login';
+    protected $redirectTo = '/frontend/login';
 
     //Override on resetPassword method inside trait ResetsPasswords
     // Override orders: Class(controllers where reuse trait) > trait > Parent class
