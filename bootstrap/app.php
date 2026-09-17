@@ -15,10 +15,15 @@ return Application::configure(basePath: dirname(__DIR__))
         //
         $middleware->redirectGuestsTo(function (Request $request) {
             if ($request->is('admin*')) {
-                return route('login');
+                return route('admin.login');
             }
             return route('frontend.login');
         });
+
+        $middleware->alias([
+            'admin' => App\Http\Middleware\Admin::class,
+            'member' => App\Http\Middleware\Member::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

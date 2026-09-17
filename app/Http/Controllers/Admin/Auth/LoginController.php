@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -25,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/admin/dashboard';
 
     /**
      * Create a new controller instance.
@@ -36,5 +38,18 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
+    }
+
+    public function authenticated(Request $request, $user)
+    {
+        if ((int) $user->level !== 1) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect(route('admin.login'))->with('error', 'Access denied. Admin credentials required.');
+        }
+
+        return redirect(route('admin.dashboard'));
     }
 }
