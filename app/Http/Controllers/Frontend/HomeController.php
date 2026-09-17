@@ -12,8 +12,9 @@ class HomeController extends Controller
     public function index()
     {
         $products = Product::latest()->take(6)->get();
+        $maxPrice = Product::max('price');
         // dd(Auth::check());
         // dd(Auth::user());
-        return view('frontend.home', compact('products'));
+        return view('frontend.home', compact('products', 'maxPrice'));
     }
 }
