@@ -20,6 +20,7 @@ use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\SearchController;
 use App\Http\Middleware\Admin;
+use App\Models\User;
 
 Route::get('/', function () {
     return view('welcome');
@@ -66,6 +67,10 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/admin/blog/edit/{blog}', [BlogController::class, 'edit'])->name('admin.blog.edit');
     Route::post('/admin/blog/update/{blog}', [BlogController::class, 'update'])->name('admin.blog.update');
     Route::delete('/admin/blog/delete/{blog}', [BlogController::class, 'destroy'])->name('admin.blog.delete');
+
+    //Users Management
+    Route::get('/admin/listUser', [UserController::class, 'showListUser'])->name('admin.showListUser');
+    Route::post('/admin/updateUser/{id}', [UserController::class, 'updateUser'])->name('admin.updateUser');
 });
 
 

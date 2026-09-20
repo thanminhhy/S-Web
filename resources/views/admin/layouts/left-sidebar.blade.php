@@ -17,6 +17,12 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{route('admin.showListUser')}}" aria-expanded="false">
+                        <i class="mdi mdi-account-network"></i>
+                        <span class="hide-menu">List User</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{route('admin.country')}}" aria-expanded="false">
                         <i class="mdi mdi-select-inverse"></i>
                         <span class="hide-menu">Country</span>
