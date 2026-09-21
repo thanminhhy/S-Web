@@ -36,6 +36,19 @@ class UserController extends Controller
         return view('admin.user.listUser', compact('users', 'countries'));
     }
 
+    public function updateUser(UpdateUserRequest $request, string $userId)
+    {
+        $user = User::findOrFail($userId);
+        $data = $request->validated();
+
+        $user->update($data);
+
+        return response()->json([
+            'message' => 'Update user profile successfully!',
+            'user' => $user->load('country')
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

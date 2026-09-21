@@ -32,7 +32,7 @@ class UpdateProfileRequest extends FormRequest
                 'required',
                 'numeric',
                 'regex:/^(0|\+84)[3|5|7|8|9][0-9]{8}$/',
-                'unique:users,phone,' . $this->user?->id,
+                'unique:users,phone,' . $this->route('id'),
             ],
         ];
     }
