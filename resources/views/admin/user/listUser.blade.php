@@ -132,9 +132,8 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <form action="" method="POST">
+                                        <form class="ajax-delete-user-form" action="{{route('admin.deleteUser', $user->id)}}" method="POST">
                                             @csrf
-                                            @method('DELETE')
 
                                             <button type="submit"
                                                 class='btn btn-danger btn-sm'>Delete</button>

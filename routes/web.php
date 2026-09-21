@@ -68,9 +68,12 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/admin/blog/update/{blog}', [BlogController::class, 'update'])->name('admin.blog.update');
     Route::delete('/admin/blog/delete/{blog}', [BlogController::class, 'destroy'])->name('admin.blog.delete');
 
-    //Users Management
+    //----Users Management
+    //1.update
     Route::get('/admin/listUser', [UserController::class, 'showListUser'])->name('admin.showListUser');
     Route::post('/admin/updateUser/{id}', [UserController::class, 'updateUser'])->name('admin.updateUser');
+    //2.delete
+    Route::post('/admin/deleteUser/{id}', [UserController::class, 'deleteUser'])->name('admin.deleteUser');
 });
 
 

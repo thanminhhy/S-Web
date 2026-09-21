@@ -49,4 +49,30 @@ $(document).ready(function () {
             },
         });
     });
+
+    $(document).on("submit", ".ajax-delete-user-form", function (e) {
+        e.preventDefault();
+
+        const currentDeleteForm = $(this);
+        const actionUrl = currentDeleteForm.attr("action");
+        const userRow = currentDeleteForm.closest("tr");
+
+        if (confirm("Bạn có chắc muốn xóa user này không")) {
+            $.ajax({
+                url: actionUrl,
+                type: "POST",
+                data: currentDeleteForm.serialize(), //Tự gom _token và _method,
+                success: function (response) {
+                    userRow.fadeOut(400, function () {
+                        ($(this), remove);
+                    });
+
+                    alert(response.message);
+                },
+                error: function () {
+                    alert("Đã có lỗi xảy ra. Vui lòng thử lại sau!");
+                },
+            });
+        }
+    });
 });

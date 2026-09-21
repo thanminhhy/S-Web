@@ -49,36 +49,13 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function deleteUser(string $userId)
     {
-        //
-    }
+        User::destroy($userId);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return response()->json([
+            'message' => "Delete user successfully!"
+        ]);
     }
 
     /**
@@ -113,13 +90,5 @@ class UserController extends Controller
         } else {
             return redirect()->back()->withErrors('Update profile error.');
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
