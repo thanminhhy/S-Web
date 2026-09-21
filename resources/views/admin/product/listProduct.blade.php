@@ -24,6 +24,7 @@
                         @if($products->count())
                         @foreach($products as $product)
                         <tr id="user-row-{{$product->id}}">
+                            @csrf
                             <td>
                                 {{$product->id}}
                             </td>
@@ -59,77 +60,10 @@
                                 <div class='d-flex'>
                                     <!-- <a href="" class='btn btn-warning btn-sm mr-2'>Edit</a> -->
                                     <div>
-                                        <button class='btn btn-warning btn-sm mr-2'
-                                            type='button'
-                                            data-toggle='modal'
-                                            data-target='#editProductModal{{$product->id}}'>
+                                        <a href="{{route('admin.showEditProduct', $product->id) }}"
+                                            class="btn btn-warning btn-sm mr-2">
                                             Edit
-                                        </button>
-                                        <div class="modal fade" id="editProductModal{{$product->id}}" tabindex="-1" role="dialog">
-                                            <div class="modal-dialog" role="document">
-
-                                                <form id="" class="ajax-update-user-form" action="" method="POST">
-                                                    @csrf
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title">Update User</h5>
-
-                                                            <button type="button" class="close" data-dismiss="modal">
-                                                                <span>&times;</span>
-                                                            </button>
-                                                        </div>
-
-                                                        <div class="modal-body">
-                                                            <div class="form-group">
-                                                                <label>User Name</label>
-                                                                <input type="text"
-                                                                    name="name"
-                                                                    class="form-control"
-                                                                    placeholder="Enter the user name"
-                                                                    value="">
-                                                                <div class="invalid-feedback error-name"></div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Email</label>
-                                                                <input type="text"
-                                                                    name="email"
-                                                                    class="form-control"
-                                                                    placeholder="Enter the user email"
-                                                                    value="">
-                                                                <div class="invalid-feedback error-email"></div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Phone</label>
-                                                                <input type="text"
-                                                                    name="phone"
-                                                                    class="form-control"
-                                                                    placeholder="Enter the user phone"
-                                                                    value="">
-                                                                <div class="invalid-feedback error-phone"></div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Address</label>
-                                                                <input type="text"
-                                                                    name="address"
-                                                                    class="form-control"
-                                                                    placeholder="Enter the user address"
-                                                                    value="">
-                                                                <div class="invalid-feedback error-address"></div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Country</label>
-                                                                <div class="invalid-feedback error-id_country"></div>
-                                                            </div>
-                                                        </div>
-                                                        <div class=" modal-footer">
-                                                            <button type="submit"
-                                                                class="btn btn-success">Save</button>
-                                                        </div>
-                                                    </div>
-                                                </form>
-
-                                            </div>
-                                        </div>
+                                        </a>
                                     </div>
                                     <div>
                                         <form class="ajax-delete-user-form" action="" method="POST">

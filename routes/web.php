@@ -76,7 +76,10 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/admin/deleteUser/{id}', [UserController::class, 'deleteUser'])->name('admin.deleteUser');
 
     //----Product Management
+    //1.Show List
     Route::get('/admin/listProduct', [AdminProductController::class, 'showListProduct'])->name('admin.showListProduct');
+    //2.Update
+    Route::get('/admin/editProduct/{id}', [AdminProductController::class, 'showEditProduct'])->name('admin.showEditProduct');
 });
 
 
