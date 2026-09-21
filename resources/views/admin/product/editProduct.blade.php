@@ -3,7 +3,7 @@
 <div class="card border-0 shadow-sm">
     <div class="card-body p-4">
         <h2 class="title text-center">Edit Product</h2>
-        <form action="{{route('admin.updateUser',$user->id)}}" method="POST" enctype="multipart/form-data">
+        <form action="{{route('admin.updateProduct',$product->id)}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row mb-3 align-items-center">
                 <input type="text" name="name" placeholder="Name" value="{{old('name', $product->name)}}" />

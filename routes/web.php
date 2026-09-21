@@ -80,6 +80,7 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/admin/listProduct', [AdminProductController::class, 'showListProduct'])->name('admin.showListProduct');
     //2.Update
     Route::get('/admin/editProduct/{id}', [AdminProductController::class, 'showEditProduct'])->name('admin.showEditProduct');
+    Route::post('/admin/editProduct/{product}', [AdminProductController::class, 'updateProduct'])->name('admin.updateProduct');
 });
 
 
