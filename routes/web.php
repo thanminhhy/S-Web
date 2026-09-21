@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Frontend\ProductController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Frontend\HomeController as FrontendHomeController;
 use App\Http\Controllers\Frontend\Auth\LoginController;
 use App\Http\Controllers\Frontend\Auth\RegisterController;
@@ -19,8 +20,7 @@ use App\Http\Controllers\Frontend\Account\MyProudctController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\SearchController;
-use App\Http\Middleware\Admin;
-use App\Models\User;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -74,6 +74,9 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/admin/updateUser/{id}', [UserController::class, 'updateUser'])->name('admin.updateUser');
     //2.delete
     Route::post('/admin/deleteUser/{id}', [UserController::class, 'deleteUser'])->name('admin.deleteUser');
+
+    //----Product Management
+    Route::get('/admin/listProduct', [AdminProductController::class, 'showListProduct'])->name('admin.showListProduct');
 });
 
 
