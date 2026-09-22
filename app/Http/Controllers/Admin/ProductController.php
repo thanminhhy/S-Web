@@ -8,14 +8,30 @@ use App\Models\Product;
 use App\Models\Category;
 use Intervention\Image\Laravel\Facades\Image;
 use App\Models\Brand;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    public function showUserShoppingHistory()
+    {
+        $orders = Order::paginate(6);
+        return view('admin.order_history.OrderHistory', compact('orders'));
+    }
     public function showListProduct()
     {
         $products = Product::paginate(6);
         return view('admin.product.listProduct', compact('products'));
+    }
+
+    public function showOrderItems(string $orderId)
+    {
+        $order = Order::with('items')->findOrFail($orderId);
+
+        return response()->json([
+            'order' => $order,
+            'items' => $order->items
+        ], 200);
     }
 
     public function showEditProduct(string $productId)

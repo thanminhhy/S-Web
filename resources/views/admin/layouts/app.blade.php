@@ -95,6 +95,7 @@
         });
     </script>
     @stack('listUserScript')
+    @stack('Order_AdminScript')
 </body>
 
 </html>

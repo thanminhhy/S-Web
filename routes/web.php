@@ -81,6 +81,10 @@ Route::middleware(['admin'])->group(function () {
     //2.Update
     Route::get('/admin/editProduct/{id}', [AdminProductController::class, 'showEditProduct'])->name('admin.showEditProduct');
     Route::post('/admin/editProduct/{product}', [AdminProductController::class, 'updateProduct'])->name('admin.updateProduct');
+
+    //User Shopping history
+    Route::get('/admin/userShoppingHistory', [AdminProductController::class, 'showUserShoppingHistory'])->name('admin.showUserShoppingHistory');
+    Route::get('/admin/OrderItems/{id}', [AdminProductController::class, 'showOrderItems'])->name('admin.order.detail');
 });
 
 
