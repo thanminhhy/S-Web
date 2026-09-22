@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Frontend\ProductController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Frontend\HomeController as FrontendHomeController;
 use App\Http\Controllers\Frontend\Auth\LoginController;
 use App\Http\Controllers\Frontend\Auth\RegisterController;
@@ -19,7 +20,7 @@ use App\Http\Controllers\Frontend\Account\MyProudctController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\SearchController;
-use App\Http\Middleware\Admin;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -66,6 +67,24 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/admin/blog/edit/{blog}', [BlogController::class, 'edit'])->name('admin.blog.edit');
     Route::post('/admin/blog/update/{blog}', [BlogController::class, 'update'])->name('admin.blog.update');
     Route::delete('/admin/blog/delete/{blog}', [BlogController::class, 'destroy'])->name('admin.blog.delete');
+
+    //----Users Management
+    //1.update
+    Route::get('/admin/listUser', [UserController::class, 'showListUser'])->name('admin.showListUser');
+    Route::post('/admin/updateUser/{id}', [UserController::class, 'updateUser'])->name('admin.updateUser');
+    //2.delete
+    Route::post('/admin/deleteUser/{id}', [UserController::class, 'deleteUser'])->name('admin.deleteUser');
+
+    //----Product Management
+    //1.Show List
+    Route::get('/admin/listProduct', [AdminProductController::class, 'showListProduct'])->name('admin.showListProduct');
+    //2.Update
+    Route::get('/admin/editProduct/{id}', [AdminProductController::class, 'showEditProduct'])->name('admin.showEditProduct');
+    Route::post('/admin/editProduct/{product}', [AdminProductController::class, 'updateProduct'])->name('admin.updateProduct');
+
+    //User Shopping history
+    Route::get('/admin/userShoppingHistory', [AdminProductController::class, 'showUserShoppingHistory'])->name('admin.showUserShoppingHistory');
+    Route::get('/admin/OrderItems/{id}', [AdminProductController::class, 'showOrderItems'])->name('admin.order.detail');
 });
 
 

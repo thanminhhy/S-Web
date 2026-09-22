@@ -94,6 +94,8 @@
             filebrowserImageUploadUrl: "{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') }}",
         });
     </script>
+    @stack('listUserScript')
+    @stack('Order_AdminScript')
 </body>
 
 </html>
