@@ -39,7 +39,7 @@ class UpdateUserRequest extends FormRequest
                 Rule::unique('users', 'phone')->ignore($userId),
             ],
             'address' => 'nullable|string',
-            'id_country' => 'required|integer|exists:countries,id'
+            'id_country' => 'integer|exists:countries,id'
         ];
     }
 

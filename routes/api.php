@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\Auth\MemberController;
 use App\Http\Controllers\API\BlogController;
 use App\Http\Controllers\API\RegisterController;
 use Illuminate\Http\Request;
@@ -20,4 +21,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', function (Request $request) {
         return $request->user();
     })->name('user');
+    Route::post('/test-api/user/update/{user}', [MemberController::class, 'update']);
 });
