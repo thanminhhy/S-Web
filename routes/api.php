@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\Auth\MemberController;
 use App\Http\Controllers\API\BlogController;
 use App\Http\Controllers\API\RegisterController;
@@ -22,4 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     })->name('user');
     Route::post('/test-api/user/update/{user}', [MemberController::class, 'update']);
+
+    Route::get('user/my-product', [ProductController::class, 'myProduct']);
+    Route::post('user/product/add', [ProductController::class, 'store']);
 });
