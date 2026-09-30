@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Blog;
 use App\Models\Comment;
+use App\Models\BlogRating;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\BlogResource;
 
@@ -118,5 +119,47 @@ class BlogController extends BaseController
             'formatedTime' => $cmtData->created_at->format('h:i A'),
             'formatedDate' => $cmtData->created_at->format('d/m/Y')
         ], 'Comment Successfully!');
+    }
+
+    public function rate(Request $request, Blog $blog)
+    {
+        //Check is user logged in
+        if (!Auth::check()) {
+            return $this->sendError('Authentication failed', [
+                'message' => 'Bạn cần đăng nhập để có thể thực hiện đánh giá!'
+            ], 401);
+        }
+
+        //validate request
+        $request->validate([
+            'rate' => 'required|integer|min:1|max:5'
+        ]);
+        $userId = Auth::id();
+        $ratingValue = $request->rate;
+
+        BlogRating::updateOrCreate(
+            [
+                'blog_id' => $blog->id,
+                'user_id' => $userId,
+            ],
+            [
+                'rating' => $ratingValue,
+            ]
+        );
+
+        $ratingCount = $blog->ratings()->count();
+        $ratingAvg = round($blog->ratings()->avg('rating'), 1);
+
+        $blog->update([
+            'rating_count' => $ratingCount,
+            'rating_avg' => $ratingAvg,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Đánh giá bài viết thành công!',
+            'rating_count' => $ratingCount,
+            'rating_avg' => $ratingAvg
+        ]);
     }
 }
