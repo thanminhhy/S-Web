@@ -123,6 +123,25 @@ class ProductController extends BaseController
         return $this->sendResponse(new ProductResource($product), 'Product update successfully!');
     }
 
+    public function deleteProduct(string $id)
+    {
+        //1. Tìm product
+        $product = Product::findOrFail($id);
+        //2. Lấy danh sách images
+        $images = $product->images ?? [];
+
+        //3. check xem images có rỗng và có phải là array không để xóa các file images được lưu trong upload
+        if (!empty($images) && is_array($images)) {
+            foreach ($images as $image) {
+                $this->deletePhysicalImages($image);
+            }
+        }
+
+        $product->delete();
+
+        return $this->sendResponse([], 'Product delete successfully!');
+    }
+
     private function deletePhysicalImages($fileName)
     {
         $folders = ['full', 'medium', 'small'];
