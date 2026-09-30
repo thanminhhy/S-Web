@@ -33,6 +33,9 @@ class ProductRequest extends FormRequest
             'detail' => 'nullable|string'
         ];
 
+        // $this->route('product') dùng để check route trong api.php xem có parameter {product} trong 
+        // Route::post('/user/product/update/{product}', [ProductController::class, 'update']); hay không nếu truyền {id} thì đỏi thành $this->route('id')
+
         if ($this->method('post') && !$this->route('product')) {
             $rules['images'] = 'required|array|min:1|max:3';
             $rules['images.*'] = 'image|mimes:jpg,jpeg,png,webp|max:2048';

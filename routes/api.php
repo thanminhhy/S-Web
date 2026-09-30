@@ -24,6 +24,8 @@ Route::middleware('auth:sanctum')->group(function () {
     })->name('user');
     Route::post('/test-api/user/update/{user}', [MemberController::class, 'update']);
 
-    Route::get('user/my-product', [ProductController::class, 'myProduct']);
-    Route::post('user/product/add', [ProductController::class, 'store']);
+    Route::get('/user/my-product', [ProductController::class, 'myProduct']);
+    Route::post('/user/product/add', [ProductController::class, 'store']);
+    Route::get('/user/product/{id}', [ProductController::class, 'show']);
+    Route::post('/user/product/update/{product}', [ProductController::class, 'update']);
 });
