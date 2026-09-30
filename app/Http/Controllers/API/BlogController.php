@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Blog;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\BlogResource;
 
@@ -75,5 +77,46 @@ class BlogController extends BaseController
         $blog->delete();
 
         return $this->sendResponse([], 'Blog deleted successfully!');
+    }
+
+    public function comment(Request $request, Blog $blog)
+    {
+        //Check is user logged in
+        if (!Auth::Check()) {
+            return $this->sendError('Authentication Failed', [
+                'message' => 'Bạn cần đăng nhập để có thể thực hiện bình luận!'
+            ], 401);
+        }
+        //Validate request
+        $request->validate([
+            'comment' => 'required',
+            'parent_id' => 'nullable|integer'
+        ]);
+
+        //declare some necessary varibles
+        $userId = Auth::id();
+        $comment = $request->comment;
+        $parentId = $request->parent_id ?? null;
+        // dd($userId, $blogId, $comment, $parentId);
+
+        //Save comment to database
+        $cmtData = Comment::Create(
+            [
+                'blog_id' => $blog->id,
+                'user_id' => $userId,
+                'parent_id' => $parentId,
+                'comment' => $comment
+            ]
+        );
+
+        $cmtData->load('user');
+
+        return $this->sendResponse([
+            'status' => 'success',
+            'message' => 'Bình luận bài viết thành công!',
+            'data' => $cmtData,
+            'formatedTime' => $cmtData->created_at->format('h:i A'),
+            'formatedDate' => $cmtData->created_at->format('d/m/Y')
+        ], 'Comment Successfully!');
     }
 }
